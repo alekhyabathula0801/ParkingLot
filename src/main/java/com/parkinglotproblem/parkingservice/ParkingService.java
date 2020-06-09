@@ -5,7 +5,7 @@ import com.parkinglotproblem.parkingsystem.ParkingRepository;
 
 public class ParkingService {
 
-    enum ParkingLotStatus {OPEN,CLOSED}
+    public enum ParkingLotStatus {OPEN,CLOSED}
 
     int MAXIMUM_CAPACITY = 100;
 
