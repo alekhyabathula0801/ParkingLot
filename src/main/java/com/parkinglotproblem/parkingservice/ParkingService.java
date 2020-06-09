@@ -7,12 +7,16 @@ public class ParkingService {
 
     private ParkingRepository parkingRepository;
 
-    public void addVehicle(String vehcileNumber,Customer customer) {
-        parkingRepository.addVehicle(vehcileNumber,customer);
+    public void parkVehicle(String vehicleNumber, Customer customer) {
+        parkingRepository.parkVehicle(vehicleNumber,customer);
     }
 
     public int getParkingLotSize() {
         return parkingRepository.getSize();
+    }
+
+    public void unparkVehicle(String vehcileNumber) {
+        parkingRepository.unparkVehicle(vehcileNumber);
     }
 
 }

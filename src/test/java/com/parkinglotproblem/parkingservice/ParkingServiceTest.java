@@ -30,7 +30,17 @@ public class ParkingServiceTest {
     @Test
     public void givenCarToPark_whenAdded_shouldIncreaseSize() {
         when(parkingRepository.getSize()).thenReturn(1);
-        parkingService.addVehicle("TS 09 K 1234",new Customer("Sweety",VehicleType.CAR));
+        parkingService.parkVehicle("TS 09 K 1234",new Customer("Sweety",VehicleType.CAR));
+        int size = parkingService.getParkingLotSize();
+        assertEquals(1,size);
+    }
+
+    @Test
+    public void givenCarToUnPark_whenRemoved_shouldDecreaseSize() {
+        when(parkingRepository.getSize()).thenReturn(1);
+        parkingService.parkVehicle("TS 09 K 1234",new Customer("Sweety",VehicleType.CAR));
+        parkingService.parkVehicle("TS 09 K 4321",new Customer("Arjun",VehicleType.CAR));
+        parkingService.unparkVehicle("TS 09 K 1234");
         int size = parkingService.getParkingLotSize();
         assertEquals(1,size);
     }
