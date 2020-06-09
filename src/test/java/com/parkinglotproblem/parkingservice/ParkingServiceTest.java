@@ -1,7 +1,8 @@
 package com.parkinglotproblem.parkingservice;
 
+import com.parkinglotproblem.parkingsystem.Customer;
 import com.parkinglotproblem.parkingsystem.ParkingRepository;
-import com.parkinglotproblem.parkingsystem.Vehicle;
+import com.parkinglotproblem.parkingsystem.VehicleType;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +30,7 @@ public class ParkingServiceTest {
     @Test
     public void givenCarToPark_whenAdded_shouldIncreaseSize() {
         when(parkingRepository.getSize()).thenReturn(1);
-        parkingService.addVehicle(Vehicle.CAR);
+        parkingService.addVehicle("TS 09 K 1234",new Customer("Sweety",VehicleType.CAR));
         int size = parkingService.getParkingLotSize();
         assertEquals(1,size);
     }

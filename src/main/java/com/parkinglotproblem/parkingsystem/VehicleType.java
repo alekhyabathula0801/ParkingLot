@@ -1,5 +1,5 @@
 package com.parkinglotproblem.parkingsystem;
 
-public enum Vehicle {
+public enum VehicleType {
     CAR
 }
