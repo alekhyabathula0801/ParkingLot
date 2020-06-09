@@ -12,6 +12,8 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.MockitoRule;
 
+import static com.parkinglotproblem.parkingservice.ParkingService.ParkingLotStatus.CLOSED;
+import static com.parkinglotproblem.parkingservice.ParkingService.ParkingLotStatus.OPEN;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +45,20 @@ public class ParkingServiceTest {
         parkingService.unparkVehicle("TS 09 K 1234");
         int size = parkingService.getParkingLotSize();
         assertEquals(1,size);
+    }
+
+    @Test
+    public void givenCarToPark_whenfull_shouldReturnClosed() {
+        when(parkingRepository.getSize()).thenReturn(100);
+        ParkingService.ParkingLotStatus status = parkingService.getParkingLotStatus();
+        assertEquals(CLOSED,status);
+    }
+
+    @Test
+    public void givenCarToPark_whenNotfull_shouldReturnOpen() {
+        when(parkingRepository.getSize()).thenReturn(10);
+        ParkingService.ParkingLotStatus status = parkingService.getParkingLotStatus();
+        assertEquals(OPEN,status);
     }
 
 }

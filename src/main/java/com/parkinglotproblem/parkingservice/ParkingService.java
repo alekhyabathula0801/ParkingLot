@@ -5,6 +5,10 @@ import com.parkinglotproblem.parkingsystem.ParkingRepository;
 
 public class ParkingService {
 
+    enum ParkingLotStatus {OPEN,CLOSED}
+
+    int MAXIMUM_CAPACITY = 100;
+
     private ParkingRepository parkingRepository;
 
     public void parkVehicle(String vehicleNumber, Customer customer) {
@@ -17,6 +21,12 @@ public class ParkingService {
 
     public void unparkVehicle(String vehcileNumber) {
         parkingRepository.unparkVehicle(vehcileNumber);
+    }
+
+    public ParkingLotStatus getParkingLotStatus() {
+        if(getParkingLotSize() == MAXIMUM_CAPACITY)
+            return ParkingLotStatus.CLOSED;
+        return ParkingLotStatus.OPEN;
     }
 
 }
