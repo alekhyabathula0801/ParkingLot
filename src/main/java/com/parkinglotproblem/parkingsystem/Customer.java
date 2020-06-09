@@ -4,6 +4,7 @@ public class Customer {
 
     String customerName;
     VehicleType vehicleType;
+    int slotNumber;
 
     public Customer(String customerName, VehicleType vehicleType) {
         if(customerName == null)
@@ -12,6 +13,12 @@ public class Customer {
             throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
         this.customerName = customerName;
         this.vehicleType = vehicleType;
+    }
+
+    public Customer(Customer customer,int slotNumber) {
+        this.slotNumber = slotNumber;
+        this.customerName = customer.customerName;
+        this.vehicleType = customer.vehicleType;
     }
 
 }

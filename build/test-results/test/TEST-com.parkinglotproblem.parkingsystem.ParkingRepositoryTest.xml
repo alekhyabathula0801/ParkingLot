@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.parkinglotproblem.parkingsystem.ParkingRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-06-09T13:15:37" hostname="LAPTOP-VMLRSS4V" time="0.004">
+<testsuite name="com.parkinglotproblem.parkingsystem.ParkingRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-06-09T17:06:26" hostname="LAPTOP-VMLRSS4V" time="55.767">
   <properties/>
-  <testcase name="givenCarToUnpark_whenRemoved_shouldReturnTrue" classname="com.parkinglotproblem.parkingsystem.ParkingRepositoryTest" time="0.004"/>
+  <testcase name="givenCarToUnpark_whenRemoved_shouldReturnTrue" classname="com.parkinglotproblem.parkingsystem.ParkingRepositoryTest" time="55.767"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
