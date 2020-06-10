@@ -1,36 +1,42 @@
 package com.parkinglotproblem.parkingsystem;
 
+import com.parkinglotproblem.exception.ParkingLotException;
+import com.parkinglotproblem.vehicle.Vehicle;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.IntStream;
 
 public class ParkingRepository {
 
-    static int MAXIMUM_CAPACITY = 100;
-    Map<String,Customer> parkingDetails = new HashMap<>();
+    int capacity;
+    List<Vehicle> parkingDetails = new ArrayList<>();
 
-    static List<Integer> availableSlots = new ArrayList<>();
-
-    static {
-        for (int slot=1; slot<=MAXIMUM_CAPACITY; slot++)
-            availableSlots.add(slot);
+    public ParkingRepository(int capacity) {
+        this.capacity = capacity;
     }
 
-    public boolean parkVehicle(String vehicleNumber, Customer customer) {
-        isFull();
-        if(vehicleNumber == null)
-            throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
-        if(vehicleNumber.length() == 0)
-            throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
-        if(parkingDetails.get(vehicleNumber) != null)
-            throw new ParkingLotException("Data Exists", ParkingLotException.ExceptionType.DATA_EXISTS);
-        parkingDetails.put(vehicleNumber, new Customer(customer,availableSlots.get(0)));
-        availableSlots.remove(0);
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public boolean parkVehicle(Vehicle vehicle) {
+        if(isFull())
+            throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
+        if(getIndex(vehicle.vehicleNumber) != -1 )
+            throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
+        parkingDetails.add(vehicle);
         return true;
     }
 
-    public int getSize() {
+    private int getIndex(String vehicleNumber) {
+        return IntStream.range(0,parkingDetails.size())
+                .filter(index -> vehicleNumber.equals(this.parkingDetails.get(index).vehicleNumber))
+                .findFirst()
+                .orElse(-1);
+    }
+
+    public int getOccupiedSize() {
         return parkingDetails.size();
     }
 
@@ -39,17 +45,17 @@ public class ParkingRepository {
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
         if(vehicleNumber.length() == 0)
             throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
-        if(parkingDetails.get(vehicleNumber) == null)
-            throw new ParkingLotException("Data Doesn't Exists", ParkingLotException.ExceptionType.DATA_DOESNT_EXISTS);
-        Customer customer = parkingDetails.get(vehicleNumber);
-        availableSlots.add(customer.slotNumber);
-        parkingDetails.remove(vehicleNumber);
+        int index = getIndex(vehicleNumber);
+        if(index == -1)
+            throw new ParkingLotException("Vehicle not present", ParkingLotException.ExceptionType.NO_VEHICLE);
+        parkingDetails.remove(index);
         return true;
     }
 
-    public void isFull() {
-        if(availableSlots.size() == 0)
-            throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
+    public boolean isFull() {
+        if(parkingDetails.size() == capacity)
+            return true;
+        return false;
     }
 
 }

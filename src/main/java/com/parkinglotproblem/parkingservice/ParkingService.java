@@ -1,30 +1,39 @@
 package com.parkinglotproblem.parkingservice;
 
-import com.parkinglotproblem.parkingsystem.Customer;
+import com.parkinglotproblem.airportmanagement.AirportSecurity;
+import com.parkinglotproblem.parkinglotowner.ParkingLotOwner;
+import com.parkinglotproblem.vehicle.Vehicle;
 import com.parkinglotproblem.parkingsystem.ParkingRepository;
 
 public class ParkingService {
 
     public enum ParkingLotStatus {OPEN,CLOSED}
 
-    int MAXIMUM_CAPACITY = 100;
+    AirportSecurity airportSecurity = new AirportSecurity();
+    ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
 
     private ParkingRepository parkingRepository;
 
-    public void parkVehicle(String vehicleNumber, Customer customer) {
-        parkingRepository.parkVehicle(vehicleNumber,customer);
+    public void parkVehicle(Vehicle vehicle) {
+        parkingRepository.parkVehicle(vehicle);
+        if(parkingRepository.isFull()) {
+            airportSecurity.getParkingLotStatus(true);
+            parkingLotOwner.getParkingLotStatus(true);
+        }
     }
 
-    public int getParkingLotSize() {
-        return parkingRepository.getSize();
+    public int getParkingLotOccupiedSize() {
+        return parkingRepository.getOccupiedSize();
     }
 
-    public void unparkVehicle(String vehcileNumber) {
-        parkingRepository.unparkVehicle(vehcileNumber);
+    public void unparkVehicle(String vehicleNumber) {
+        parkingRepository.unparkVehicle(vehicleNumber);
+        if(!parkingRepository.isFull())
+            parkingLotOwner.getParkingLotStatus(false);
     }
 
     public ParkingLotStatus getParkingLotStatus() {
-        if(getParkingLotSize() == MAXIMUM_CAPACITY)
+        if(parkingRepository.isFull())
             return ParkingLotStatus.CLOSED;
         return ParkingLotStatus.OPEN;
     }

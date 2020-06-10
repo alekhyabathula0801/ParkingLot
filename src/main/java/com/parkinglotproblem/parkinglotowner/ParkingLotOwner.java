@@ -1,6 +1,6 @@
-package com.parkinglotproblem.airportmanagement;
+package com.parkinglotproblem.parkinglotowner;
 
-public class AirportSecurity {
+public class ParkingLotOwner {
 
     public boolean getParkingLotStatus(boolean status) {
         return status;
