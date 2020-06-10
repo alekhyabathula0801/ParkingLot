@@ -24,7 +24,7 @@ public class AirportSecurityTest {
     AirportSecurity airportSecurity;
 
     @Test
-    public void givenParkingLotStatus_whenfull_shouldThrowException() {
+    public void givenParkingLot_whenfull_shouldThrowException() {
         try {
             when(parkingService.getParkingLotStatus()).thenReturn(ParkingService.ParkingLotStatus.CLOSED);
             airportSecurity.getParkingLotSize();

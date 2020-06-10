@@ -8,8 +8,7 @@ import java.util.Map;
 public class ParkingRepository {
 
     static int MAXIMUM_CAPACITY = 100;
-    List<Customer> customers = new ArrayList<>();
-    Map<String,List<Customer>> parkingDetails = new HashMap<>();
+    Map<String,Customer> parkingDetails = new HashMap<>();
 
     static List<Integer> availableSlots = new ArrayList<>();
 
@@ -26,9 +25,7 @@ public class ParkingRepository {
             throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
         if(parkingDetails.get(vehicleNumber) != null)
             throw new ParkingLotException("Data Exists", ParkingLotException.ExceptionType.DATA_EXISTS);
-        customers = new ArrayList<>();
-        customers.add(new Customer(customer,availableSlots.get(0)));
-        parkingDetails.put(vehicleNumber, customers);
+        parkingDetails.put(vehicleNumber, new Customer(customer,availableSlots.get(0)));
         availableSlots.remove(0);
         return true;
     }
@@ -44,8 +41,8 @@ public class ParkingRepository {
             throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
         if(parkingDetails.get(vehicleNumber) == null)
             throw new ParkingLotException("Data Doesn't Exists", ParkingLotException.ExceptionType.DATA_DOESNT_EXISTS);
-        List<Customer> customerDetails =parkingDetails.get(vehicleNumber);
-        availableSlots.add(customerDetails.get(0).slotNumber);
+        Customer customer = parkingDetails.get(vehicleNumber);
+        availableSlots.add(customer.slotNumber);
         parkingDetails.remove(vehicleNumber);
         return true;
     }
