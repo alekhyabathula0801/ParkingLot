@@ -30,6 +30,7 @@ public class ParkingRepository {
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
         if(parkingData.containsKey(position))
             throw new ParkingLotException("Slot occupied", ParkingLotException.ExceptionType.SLOT_OCCUPIED);
+        vehicle.setInTime(System.currentTimeMillis());
         parkingData.put(position,vehicle);
         return true;
     }

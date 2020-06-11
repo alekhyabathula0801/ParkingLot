@@ -8,6 +8,7 @@ import com.parkinglotproblem.parkingsystem.ParkingRepository;
 public class ParkingService {
 
     public enum ParkingLotStatus {OPEN,CLOSED}
+    long inTime;
 
     AirportSecurity airportSecurity = new AirportSecurity();
     ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
