@@ -4,13 +4,14 @@ import com.parkinglotproblem.exception.ParkingLotException;
 import com.parkinglotproblem.vehicle.Vehicle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Map;
 
 public class ParkingRepository {
 
-    int capacity;
-    List<Vehicle> parkingDetails = new ArrayList<>(capacity);
+    public int capacity;
+    Map<Integer,Vehicle> parkingData = new HashMap<>();
 
     public ParkingRepository(int capacity) {
         this.capacity = capacity;
@@ -20,39 +21,50 @@ public class ParkingRepository {
         this.capacity = capacity;
     }
 
-    public boolean parkVehicle(Vehicle vehicle) {
+    public boolean parkVehicle(Vehicle vehicle,int position) {
         if(isFull())
             throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
         if(vehicle == null)
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
-        if(parkingDetails.contains(vehicle))
+        if(isVehicleParked(vehicle))
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
-        parkingDetails.add(vehicle);
+        if(parkingData.containsKey(position))
+            throw new ParkingLotException("Slot occupied", ParkingLotException.ExceptionType.SLOT_OCCUPIED);
+        parkingData.put(position,vehicle);
         return true;
     }
 
-    private int getIndex(String vehicleNumber) {
-        return IntStream.range(0,parkingDetails.size())
-                        .filter(index -> vehicleNumber.equals(parkingDetails.get(index).vehicleNumber))
-                        .findFirst()
-                        .orElse(-1);
+    public boolean isVehicleParked(Vehicle vehicle) {
+        return parkingData.entrySet().stream().anyMatch(element -> element.getValue().equals(vehicle));
     }
 
     public int getOccupiedSize() {
-        return parkingDetails.size();
+        return parkingData.size();
+    }
+
+    public List<Integer> getOccupiedSlots() {
+        return new ArrayList<>(parkingData.keySet());
+    }
+
+    public int getSlotNumber(Vehicle vehicle) {
+        return parkingData.entrySet().stream()
+                          .filter(value -> value.getValue().equals(vehicle))
+                          .map(Map.Entry::getKey)
+                          .findFirst()
+                          .get();
     }
 
     public boolean unparkVehicle(Vehicle vehicle) {
         if(vehicle == null)
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
-        if(!parkingDetails.contains(vehicle))
+        if(!isVehicleParked(vehicle))
             throw new ParkingLotException("Vehicle not present", ParkingLotException.ExceptionType.NO_VEHICLE);
-        parkingDetails.remove(getIndex(vehicle.vehicleNumber));
+        parkingData.remove(getSlotNumber(vehicle));
         return true;
     }
 
     public boolean isFull() {
-        return parkingDetails.size() == capacity;
+        return parkingData.size() == capacity;
     }
 
 }

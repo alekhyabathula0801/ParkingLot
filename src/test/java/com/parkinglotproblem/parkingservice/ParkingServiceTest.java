@@ -1,5 +1,6 @@
 package com.parkinglotproblem.parkingservice;
 
+import com.parkinglotproblem.parkinglotowner.ParkingLotOwner;
 import com.parkinglotproblem.vehicle.Vehicle;
 import com.parkinglotproblem.parkingsystem.ParkingRepository;
 import org.junit.Before;
@@ -26,6 +27,9 @@ public class ParkingServiceTest {
     @Mock
     ParkingRepository parkingRepository;
 
+    @Mock
+    ParkingLotOwner parkingLotOwner;
+
     @InjectMocks
     ParkingService parkingService;
 
@@ -37,7 +41,8 @@ public class ParkingServiceTest {
     @Test
     public void givenCarToPark_whenAdded_shouldIncreaseSize() {
         when(parkingRepository.getOccupiedSize()).thenReturn(1);
-        when(parkingRepository.parkVehicle(new Vehicle("TS 09 K 1234"))).thenReturn(true);
+        when(parkingRepository.parkVehicle(new Vehicle("TS 09 K 1234"),1)).thenReturn(true);
+        when(parkingLotOwner.assignSlotNumber(parkingRepository.getOccupiedSlots(),parkingRepository.capacity)).thenReturn(1);
         parkingService.parkVehicle(new Vehicle("TS 09 K 1234"));
         int size = parkingService.getParkingLotOccupiedSize();
         assertEquals(1,size);
@@ -45,15 +50,14 @@ public class ParkingServiceTest {
 
     @Test
     public void givenCarToUnPark_whenRemoved_shouldDecreaseSize() {
-        when(parkingRepository.getOccupiedSize()).thenReturn(1);
-        when(parkingRepository.parkVehicle(new Vehicle("TS 09 K 1234"))).thenReturn(true);
-        when(parkingRepository.parkVehicle(new Vehicle("TS 09 K 4321"))).thenReturn(true);
+        when(parkingRepository.getOccupiedSize()).thenReturn(0);
+        when(parkingRepository.parkVehicle(new Vehicle("TS 09 K 1234"),1)).thenReturn(true);
+        when(parkingLotOwner.assignSlotNumber(parkingRepository.getOccupiedSlots(),parkingRepository.capacity)).thenReturn(1);
         when(parkingRepository.unparkVehicle(new Vehicle("TS 09 K 1234"))).thenReturn(true);
         parkingService.parkVehicle(new Vehicle("TS 09 K 1234"));
-        parkingService.parkVehicle(new Vehicle("TS 09 K 4321"));
         parkingService.unparkVehicle(new Vehicle("TS 09 K 1234"));
         int size = parkingService.getParkingLotOccupiedSize();
-        assertEquals(1,size);
+        assertEquals(0,size);
     }
 
     @Test
@@ -68,6 +72,16 @@ public class ParkingServiceTest {
         when(parkingRepository.isFull()).thenReturn(false);
         ParkingService.ParkingLotStatus status = parkingService.getParkingLotStatus();
         assertEquals(OPEN,status);
+    }
+
+    @Test
+    public void givenCarToPark_whenParked_shouldReturnSlotNumber() {
+        when(parkingRepository.getSlotNumber(new Vehicle("TS09K4321"))).thenReturn(1);
+        when(parkingRepository.parkVehicle(new Vehicle("TS09K4321"),1)).thenReturn(true);
+        when(parkingLotOwner.assignSlotNumber(parkingRepository.getOccupiedSlots(),parkingRepository.capacity)).thenReturn(1);
+        parkingService.parkVehicle(new Vehicle("TS09K4321"));
+        int slotNumber = parkingService.getSlotNumber(new Vehicle("TS09K4321"));
+        assertEquals(1,slotNumber);
     }
 
 }

@@ -15,7 +15,8 @@ public class ParkingService {
     private ParkingRepository parkingRepository;
 
     public void parkVehicle(Vehicle vehicle) {
-        parkingRepository.parkVehicle(vehicle);
+        int position = parkingLotOwner.assignSlotNumber(parkingRepository.getOccupiedSlots(),parkingRepository.capacity);
+        parkingRepository.parkVehicle(vehicle,position);
         if(parkingRepository.isFull()) {
             airportSecurity.getParkingLotStatus(true);
             parkingLotOwner.getParkingLotStatus(true);
@@ -30,6 +31,10 @@ public class ParkingService {
         parkingRepository.unparkVehicle(vehicle);
         if(!parkingRepository.isFull())
             parkingLotOwner.getParkingLotStatus(false);
+    }
+
+    public int getSlotNumber(Vehicle vehicle) {
+        return parkingRepository.getSlotNumber(vehicle);
     }
 
     public ParkingLotStatus getParkingLotStatus() {
