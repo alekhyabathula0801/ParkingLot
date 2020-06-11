@@ -48,23 +48,23 @@ public class ParkingServiceTest {
         when(parkingRepository.getOccupiedSize()).thenReturn(1);
         when(parkingRepository.parkVehicle(new Vehicle("TS 09 K 1234"))).thenReturn(true);
         when(parkingRepository.parkVehicle(new Vehicle("TS 09 K 4321"))).thenReturn(true);
-        when(parkingRepository.unparkVehicle("TS 09 K 1234")).thenReturn(true);
+        when(parkingRepository.unparkVehicle(new Vehicle("TS 09 K 1234"))).thenReturn(true);
         parkingService.parkVehicle(new Vehicle("TS 09 K 1234"));
         parkingService.parkVehicle(new Vehicle("TS 09 K 4321"));
-        parkingService.unparkVehicle("TS 09 K 1234");
+        parkingService.unparkVehicle(new Vehicle("TS 09 K 1234"));
         int size = parkingService.getParkingLotOccupiedSize();
         assertEquals(1,size);
     }
 
     @Test
-    public void givenCarToPark_whenfull_shouldReturnClosed() {
+    public void givenCarToPark_whenFull_shouldReturnClosed() {
         when(parkingRepository.isFull()).thenReturn(true);
         ParkingService.ParkingLotStatus status = parkingService.getParkingLotStatus();
         assertEquals(CLOSED,status);
     }
 
     @Test
-    public void givenCarToPark_whenNotfull_shouldReturnOpen() {
+    public void givenCarToPark_whenNotFull_shouldReturnOpen() {
         when(parkingRepository.isFull()).thenReturn(false);
         ParkingService.ParkingLotStatus status = parkingService.getParkingLotStatus();
         assertEquals(OPEN,status);

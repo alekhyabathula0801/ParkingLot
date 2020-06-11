@@ -26,8 +26,8 @@ public class ParkingService {
         return parkingRepository.getOccupiedSize();
     }
 
-    public void unparkVehicle(String vehicleNumber) {
-        parkingRepository.unparkVehicle(vehicleNumber);
+    public void unparkVehicle(Vehicle vehicle) {
+        parkingRepository.unparkVehicle(vehicle);
         if(!parkingRepository.isFull())
             parkingLotOwner.getParkingLotStatus(false);
     }

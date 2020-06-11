@@ -74,6 +74,15 @@ public class ParkingRepositoryTest {
     }
 
     @Test
+    public void givenNull_shouldThrowExecption() {
+        try {
+            parkingRepository.parkVehicle(null);
+        } catch (ParkingLotException e) {
+            assertEquals(ENTERED_NULL,e.type);
+        }
+    }
+
+    @Test
     public void givenEmptyCarNumber_shouldThrowExecption() {
         try {
             parkingRepository.parkVehicle(new Vehicle(""));
@@ -88,7 +97,7 @@ public class ParkingRepositoryTest {
         parkingRepository.parkVehicle(new Vehicle("MK 91 G 1245"));
         parkingRepository.parkVehicle(new Vehicle("JK 23 H 9807"));
         int size = parkingRepository.getOccupiedSize();
-        parkingRepository.unparkVehicle("JK 23 H 9807");
+        parkingRepository.unparkVehicle(new Vehicle("JK 23 H 9807"));
         int updatedSize = parkingRepository.getOccupiedSize();
         assertEquals(size-1,updatedSize);
     }
@@ -98,12 +107,21 @@ public class ParkingRepositoryTest {
         parkingRepository.parkVehicle(new Vehicle("TS 91 G 1267"));
         parkingRepository.parkVehicle(new Vehicle("MK 91 G 1245"));
         parkingRepository.parkVehicle(new Vehicle("JK 23 H 9807"));
-        boolean result = parkingRepository.unparkVehicle("JK 23 H 9807");
+        boolean result = parkingRepository.unparkVehicle(new Vehicle("JK 23 H 9807"));
         assertTrue(result);
     }
 
     @Test
     public void givenNullNumberToUnpark_shouldThrowExecption() {
+        try {
+            parkingRepository.unparkVehicle(new Vehicle(null));
+        } catch (ParkingLotException e) {
+            assertEquals(ENTERED_NULL,e.type);
+        }
+    }
+
+    @Test
+    public void givenNullToUnpark_shouldThrowExecption() {
         try {
             parkingRepository.unparkVehicle(null);
         } catch (ParkingLotException e) {
@@ -114,7 +132,7 @@ public class ParkingRepositoryTest {
     @Test
     public void givenEmptyCarNumberToUnpark_shouldThrowExecption() {
         try {
-            parkingRepository.unparkVehicle("");
+            parkingRepository.unparkVehicle(new Vehicle(""));
         } catch (ParkingLotException e) {
             assertEquals(ENTERED_EMPTY,e.type);
         }
@@ -123,7 +141,7 @@ public class ParkingRepositoryTest {
     @Test
     public void givenCarNumberToUnpark_whenNotPresent_shouldThrowExecption() {
         try {
-            parkingRepository.unparkVehicle("TS 09 CD 1234");
+            parkingRepository.unparkVehicle(new Vehicle("TS 09 CD 1234"));
         } catch (ParkingLotException e) {
             assertEquals(NO_VEHICLE,e.type);
         }

@@ -2,6 +2,8 @@ package com.parkinglotproblem.vehicle;
 
 import com.parkinglotproblem.exception.ParkingLotException;
 
+import java.util.Objects;
+
 public class Vehicle {
 
     public String vehicleNumber;
@@ -12,6 +14,14 @@ public class Vehicle {
         if(vehicleNumber.length() == 0)
             throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
         this.vehicleNumber = vehicleNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return Objects.equals(vehicleNumber, vehicle.vehicleNumber);
     }
 
 }
