@@ -13,13 +13,13 @@ import java.util.Map;
 public class ParkingSlot {
 
     public int capacity;
-    Map<Integer,Vehicle> parkingData = new HashMap<>();
+    Map<Integer,ParkingSpot> parkingData = new HashMap<>();
     ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
 
     public ParkingSlot(int capacity) {
         this.capacity = capacity;
     }
-
+/*
     public boolean parkVehicle(Vehicle vehicle,int spotNumber) {
         if(isFull())
             throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
@@ -35,12 +35,21 @@ public class ParkingSlot {
             parkingLotOwner.getParkingLotStatus(true);
         }
         return true;
+    }*/
+
+    public boolean parkVehicle(ParkingSpot parkingSpot) {
+        parkingData.put(parkingSpot.position,parkingSpot);
+        if(isFull()) {
+            new AirportSecurity().getParkingLotStatus(true);
+            parkingLotOwner.getParkingLotStatus(true);
+        }
+        return true;
     }
 
     public boolean isVehicleParked(Vehicle vehicle) {
-        return parkingData.entrySet()
+                return parkingData.entrySet()
                           .stream()
-                          .anyMatch(element -> element.getValue().equals(vehicle));
+                          .anyMatch(element -> element.getValue().vehicle.equals(vehicle));
     }
 
     public int getOccupiedSize() {
@@ -54,7 +63,7 @@ public class ParkingSlot {
     public int getSpotNumber(Vehicle vehicle) {
         return parkingData.entrySet()
                           .stream()
-                          .filter(value -> value.getValue().equals(vehicle))
+                          .filter(value -> value.getValue().vehicle.equals(vehicle))
                           .map(Map.Entry::getKey)
                           .findFirst()
                           .get();

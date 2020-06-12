@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ParkingLot {
 
+    enum DriverType {NORMAL,HANDICAPED}
     public enum ParkingLotStatus {OPEN,CLOSED}
     int parkingLotSize;
     List<ParkingSpot> parkingSpots = new ArrayList<>();
@@ -20,8 +21,10 @@ public class ParkingLot {
         this.parkingSlots.forEach(slot -> parkingLotSize += slot.capacity);
     }
 
-    public boolean parkVehicle(Vehicle vehicle) {
-        return parkingSpots.add(evenDistribution.evenDistributionOfLots(vehicle,parkingSlots));
+    public boolean parkVehicle(Vehicle vehicle,DriverType driverType) {
+        if(DriverType.NORMAL.equals(driverType))
+            return parkingSpots.add(evenDistribution.evenDistributionOfLots(vehicle,parkingSlots));
+        return parkingSpots.add(new HandicapDriver().parkVehicle(vehicle,parkingSlots));
     }
 
     public int getParkingLotOccupiedSize() {

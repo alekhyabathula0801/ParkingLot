@@ -23,15 +23,15 @@ public class ParkingSlotTest {
 
     @Test
     public void givenCarToPark_whenAdded_shouldReturnTrue() {
-        boolean result = parkingSlot.parkVehicle(new Vehicle("TS09K2345"),1);
+        boolean result = parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS09K2345")));
         assertTrue(result);
     }
 
     @Test
     public void givenCarsToPark_whenAdded_shouldReturnSize() {
-        parkingSlot.parkVehicle(new Vehicle("TS91G1267"),1);
-        parkingSlot.parkVehicle(new Vehicle("MK91G1245"),2);
-        parkingSlot.parkVehicle(new Vehicle("JK23H9807"),3);
+        parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
+        parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
+        parkingSlot.parkVehicle(new ParkingSpot(0,3,new Vehicle("JK23H9807")));
         int size = parkingSlot.getOccupiedSize();
         assertEquals(3,size);
     }
@@ -39,12 +39,12 @@ public class ParkingSlotTest {
     @Test
     public void givenCarsToPark_whenFull_shouldThrowException() {
         try {
-            parkingSlot.parkVehicle(new Vehicle("TS91G1267"),1);
-            parkingSlot.parkVehicle(new Vehicle("MK91G1245"),2);
-            parkingSlot.parkVehicle(new Vehicle("JK23H9807"),3);
-            parkingSlot.parkVehicle(new Vehicle("TN91G1267"),4);
-            parkingSlot.parkVehicle(new Vehicle("KK91G1245"),5);
-            parkingSlot.parkVehicle(new Vehicle("GK23H9807"),6);
+            parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,3,new Vehicle("JK23H9807")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,4,new Vehicle("TS91G1267")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,5,new Vehicle("MK91G1245")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,6,new Vehicle("JK23H9807")));
         } catch (ParkingLotException e) {
             assertEquals(PARKING_LOT_IS_FULL,e.type);
         }
@@ -53,9 +53,9 @@ public class ParkingSlotTest {
     @Test
     public void givenCarsToPark_whenSameSlot_shouldThrowException() {
         try {
-            parkingSlot.parkVehicle(new Vehicle("TS91G1267"),1);
-            parkingSlot.parkVehicle(new Vehicle("MK91G1245"),2);
-            parkingSlot.parkVehicle(new Vehicle("JK23H9807"),2);
+            parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("JK23H9807")));
         } catch (ParkingLotException e) {
             assertEquals(SLOT_OCCUPIED,e.type);
         }
@@ -64,9 +64,9 @@ public class ParkingSlotTest {
     @Test
     public void givenCarsToPark_whenDataAlreadyExists_shouldThrowException() {
         try {
-            parkingSlot.parkVehicle(new Vehicle("TS91G1267"),1);
-            parkingSlot.parkVehicle(new Vehicle("MK91G1245"),2);
-            parkingSlot.parkVehicle(new Vehicle("MK91G1245"),3);
+            parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,3,new Vehicle("MK91G1245")));
         } catch (ParkingLotException e) {
             assertEquals(VEHICLE_EXISTS,e.type);
         }
@@ -81,7 +81,7 @@ public class ParkingSlotTest {
     @Test
     public void givenNullNumber_shouldThrowExecption() {
         try {
-            parkingSlot.parkVehicle(new Vehicle(null),1);
+            parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle(null)));
         } catch (ParkingLotException e) {
             assertEquals(ENTERED_NULL,e.type);
         }
@@ -90,7 +90,7 @@ public class ParkingSlotTest {
     @Test
     public void givenNull_shouldThrowExecption() {
         try {
-            parkingSlot.parkVehicle(null,1);
+            parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle(null)));
         } catch (ParkingLotException e) {
             assertEquals(ENTERED_NULL,e.type);
         }
@@ -99,7 +99,7 @@ public class ParkingSlotTest {
     @Test
     public void givenEmptyCarNumber_shouldThrowExecption() {
         try {
-            parkingSlot.parkVehicle(new Vehicle(""),1);
+            parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("")));
         } catch (ParkingLotException e) {
             assertEquals(ENTERED_EMPTY,e.type);
         }
@@ -107,9 +107,9 @@ public class ParkingSlotTest {
 
     @Test
     public void givenCarToUnpark_whenRemoved_shouldDecreaseSizeBy1() {
-        parkingSlot.parkVehicle(new Vehicle("TS91G1267"),1);
-        parkingSlot.parkVehicle(new Vehicle("MK91G1245"),2);
-        parkingSlot.parkVehicle(new Vehicle("JK23H9807"),3);
+        parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
+        parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
+        parkingSlot.parkVehicle(new ParkingSpot(0,3,new Vehicle("JK23H9807")));
         int size = parkingSlot.getOccupiedSize();
         parkingSlot.unparkVehicle(new Vehicle("JK23H9807"));
         int updatedSize = parkingSlot.getOccupiedSize();
@@ -118,9 +118,9 @@ public class ParkingSlotTest {
 
     @Test
     public void givenCarToUnpark_whenRemoved_shouldReturnTrue() {
-        parkingSlot.parkVehicle(new Vehicle("TS91G1267"),1);
-        parkingSlot.parkVehicle(new Vehicle("MK91G1245"),2);
-        parkingSlot.parkVehicle(new Vehicle("JK23H9807"),3);
+        parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
+        parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
+        parkingSlot.parkVehicle(new ParkingSpot(0,3,new Vehicle("JK23H9807")));
         boolean result = parkingSlot.unparkVehicle(new Vehicle("JK23H9807"));
         assertTrue(result);
     }
@@ -164,9 +164,9 @@ public class ParkingSlotTest {
 
     @Test
     public void givenVehicleToPark_whenParked_ReturnSlotNumber() {
-        parkingSlot.parkVehicle(new Vehicle("AP01GH2345"),5);
-        int slotNumber = parkingSlot.getSpotNumber(new Vehicle("AP01GH2345"));
-        assertEquals(5,slotNumber);
+        parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
+        int slotNumber = parkingSlot.getSpotNumber(new Vehicle("TS91G1267"));
+        assertEquals(1,slotNumber);
     }
 
     @Test
@@ -175,9 +175,9 @@ public class ParkingSlotTest {
         expectedSlots.add(1);
         expectedSlots.add(2);
         expectedSlots.add(3);
-        parkingSlot.parkVehicle(new Vehicle("TS91G1267"),1);
-        parkingSlot.parkVehicle(new Vehicle("MK91G1245"),2);
-        parkingSlot.parkVehicle(new Vehicle("JK23H9807"),3);
+        parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
+        parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
+        parkingSlot.parkVehicle(new ParkingSpot(0,3,new Vehicle("JK23H9807")));
         List<Integer> occupiedSlots = parkingSlot.getOccupiedSlots();
         assertEquals(expectedSlots,occupiedSlots);
     }

@@ -25,8 +25,9 @@ public class EvenDistribution {
                                   .min()
                                   .orElseThrow(() -> new ParkingLotException("Parking lots are full",PARKING_LOT_IS_FULL));
         int indexOfLeastSlotValue = spots.indexOf(leastSlotValue);
-        parkingSlots.get(indexOfLeastSlotValue).parkVehicle(vehicle,leastSlotValue);
-        return new ParkingSpot(indexOfLeastSlotValue,leastSlotValue,vehicle,System.currentTimeMillis());
+        ParkingSpot parkingSpot = new ParkingSpot(indexOfLeastSlotValue,leastSlotValue,vehicle,System.currentTimeMillis(), ParkingLot.DriverType.NORMAL);
+        parkingSlots.get(indexOfLeastSlotValue).parkVehicle(parkingSpot);
+        return parkingSpot;
     }
 
 }
