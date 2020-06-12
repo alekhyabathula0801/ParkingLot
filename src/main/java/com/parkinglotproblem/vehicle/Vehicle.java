@@ -7,7 +7,6 @@ import java.util.Objects;
 public class Vehicle {
 
     public String vehicleNumber;
-    long inTime;
 
     public Vehicle(String vehicleNumber) {
         if(vehicleNumber == null)
@@ -15,10 +14,6 @@ public class Vehicle {
         if(vehicleNumber.length() == 0)
             throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
         this.vehicleNumber = vehicleNumber;
-    }
-
-    public void setInTime(long inTime) {
-        this.inTime = inTime;
     }
 
     @Override

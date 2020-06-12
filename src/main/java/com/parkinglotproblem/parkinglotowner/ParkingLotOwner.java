@@ -1,7 +1,5 @@
 package com.parkinglotproblem.parkinglotowner;
 
-import com.parkinglotproblem.exception.ParkingLotException;
-
 import java.util.List;
 
 public class ParkingLotOwner {
@@ -15,7 +13,7 @@ public class ParkingLotOwner {
             if(!occupiedSlots.contains(slot))
                 return slot;
         }
-        throw new ParkingLotException("Parking Lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
+        return -1;
     }
 
 }

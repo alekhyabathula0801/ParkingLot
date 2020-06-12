@@ -1,6 +1,8 @@
-package com.parkinglotproblem.parkingsystem;
+package com.parkinglotproblem.parkinglotsystem;
 
+import com.parkinglotproblem.airportmanagement.AirportSecurity;
 import com.parkinglotproblem.exception.ParkingLotException;
+import com.parkinglotproblem.parkinglotowner.ParkingLotOwner;
 import com.parkinglotproblem.vehicle.Vehicle;
 
 import java.util.ArrayList;
@@ -8,35 +10,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ParkingRepository {
+public class ParkingSlot {
 
     public int capacity;
     Map<Integer,Vehicle> parkingData = new HashMap<>();
+    ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
 
-    public ParkingRepository(int capacity) {
+    public ParkingSlot(int capacity) {
         this.capacity = capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public boolean parkVehicle(Vehicle vehicle,int position) {
+    public boolean parkVehicle(Vehicle vehicle,int spotNumber) {
         if(isFull())
             throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
         if(vehicle == null)
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
-        if(isVehicleParked(vehicle))
+        if(parkingData.containsValue(vehicle))
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
-        if(parkingData.containsKey(position))
+        if(parkingData.containsKey(spotNumber))
             throw new ParkingLotException("Slot occupied", ParkingLotException.ExceptionType.SLOT_OCCUPIED);
-        vehicle.setInTime(System.currentTimeMillis());
-        parkingData.put(position,vehicle);
+        parkingData.put(spotNumber,vehicle);
+        if(isFull()) {
+            new AirportSecurity().getParkingLotStatus(true);
+            parkingLotOwner.getParkingLotStatus(true);
+        }
         return true;
     }
 
     public boolean isVehicleParked(Vehicle vehicle) {
-        return parkingData.entrySet().stream().anyMatch(element -> element.getValue().equals(vehicle));
+        return parkingData.entrySet()
+                          .stream()
+                          .anyMatch(element -> element.getValue().equals(vehicle));
     }
 
     public int getOccupiedSize() {
@@ -47,8 +51,9 @@ public class ParkingRepository {
         return new ArrayList<>(parkingData.keySet());
     }
 
-    public int getSlotNumber(Vehicle vehicle) {
-        return parkingData.entrySet().stream()
+    public int getSpotNumber(Vehicle vehicle) {
+        return parkingData.entrySet()
+                          .stream()
                           .filter(value -> value.getValue().equals(vehicle))
                           .map(Map.Entry::getKey)
                           .findFirst()
@@ -60,7 +65,9 @@ public class ParkingRepository {
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
         if(!isVehicleParked(vehicle))
             throw new ParkingLotException("Vehicle not present", ParkingLotException.ExceptionType.NO_VEHICLE);
-        parkingData.remove(getSlotNumber(vehicle));
+        parkingData.remove(getSpotNumber(vehicle));
+        if(parkingData.size() == capacity-1)
+            parkingLotOwner.getParkingLotStatus(false);
         return true;
     }
 
