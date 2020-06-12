@@ -13,7 +13,6 @@ public class ParkingLot {
     int parkingLotSize;
     List<ParkingSpot> parkingSpots = new ArrayList<>();
     List<ParkingSlot> parkingSlots = new ArrayList<>();
-    EvenDistribution evenDistribution = new EvenDistribution();
 
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
         this.parkingSlots.add(parkingSlot);
@@ -22,9 +21,7 @@ public class ParkingLot {
     }
 
     public boolean parkVehicle(Vehicle vehicle,DriverType driverType) {
-        if(DriverType.NORMAL.equals(driverType))
-            return parkingSpots.add(evenDistribution.evenDistributionOfLots(vehicle,parkingSlots));
-        return parkingSpots.add(new HandicapDriver().parkVehicle(vehicle,parkingSlots));
+        return parkingSpots.add(new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType));
     }
 
     public int getParkingLotOccupiedSize() {
