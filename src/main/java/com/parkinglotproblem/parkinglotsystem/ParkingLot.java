@@ -25,8 +25,10 @@ public class ParkingLot {
     }
 
     public boolean parkVehicle(Vehicle vehicle,DriverType driverType) {
-        if(parkingSpots.size() == parkingLotSize)
+        if(isFull())
             throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
+        if(isVehicleParked(vehicle))
+            throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
         parkingSpots.add(new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType));
         if(parkingSpots.size() == parkingLotSize) {
             new AirportSecurity().getParkingLotStatus(true);
@@ -39,7 +41,14 @@ public class ParkingLot {
         return parkingSpots.size();
     }
 
+    public boolean isVehicleParked(Vehicle vehicle) {
+        return parkingSpots.stream()
+                           .anyMatch(spot -> spot.vehicle.equals(vehicle));
+    }
+
     public boolean unparkVehicle(Vehicle vehicle) {
+        if(!isVehicleParked(vehicle))
+            throw new ParkingLotException("Vehicle Doesn't Exists", ParkingLotException.ExceptionType.NO_VEHICLE);
         parkingSlots.get(getParkingSpot(vehicle).slotNumber).unparkVehicle(vehicle);
         parkingSpots.remove(getParkingSpot(vehicle));
         if(parkingSpots.size() == parkingLotSize-1)
@@ -55,7 +64,8 @@ public class ParkingLot {
     }
 
     public int getSpotNumber(Vehicle vehicle) {
-        return parkingSlots.get(getParkingSpot(vehicle).slotNumber).getSpotNumber(vehicle);
+        return parkingSlots.get(getParkingSpot(vehicle).slotNumber)
+                           .getSpotNumber(vehicle);
     }
 
     public ParkingLotStatus getParkingLotStatus() {

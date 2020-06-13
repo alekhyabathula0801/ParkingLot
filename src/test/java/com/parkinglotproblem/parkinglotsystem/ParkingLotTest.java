@@ -7,8 +7,7 @@ import org.junit.Test;
 
 import static com.parkinglotproblem.parkinglotsystem.ParkingLot.ParkingLotStatus.CLOSED;
 import static com.parkinglotproblem.parkinglotsystem.ParkingLot.ParkingLotStatus.OPEN;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ParkingLotTest {
 
@@ -129,6 +128,16 @@ public class ParkingLotTest {
         ParkingSpot vehicle3Details = parkingLot.getParkingSpot(new Vehicle("SK09A5679"));
         ParkingSpot expectedVehicle3Details = new ParkingSpot(0,2,new Vehicle("SK09A5679"));
         assertEquals(expectedVehicle3Details,vehicle3Details);
+    }
+
+    @Test
+    public void givenParkingLot_whenVehicleIsPresent_shouldReturnTrue() {
+        assertTrue(parkingLot.isVehicleParked(new Vehicle("AP10K0987")));
+    }
+
+    @Test
+    public void givenParkingLot_whenVehicleIsNotPresent_shouldReturnFalse() {
+        assertFalse(parkingLot.isVehicleParked(new Vehicle("AP10K0980")));
     }
 
 }

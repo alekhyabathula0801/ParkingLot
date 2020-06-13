@@ -1,8 +1,6 @@
 package com.parkinglotproblem.parkinglotsystem;
 
-import com.parkinglotproblem.airportmanagement.AirportSecurity;
 import com.parkinglotproblem.exception.ParkingLotException;
-import com.parkinglotproblem.parkinglotowner.ParkingLotOwner;
 import com.parkinglotproblem.vehicle.Vehicle;
 
 import java.util.ArrayList;
