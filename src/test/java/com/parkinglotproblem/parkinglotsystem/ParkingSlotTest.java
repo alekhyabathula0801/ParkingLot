@@ -42,9 +42,9 @@ public class ParkingSlotTest {
             parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
             parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
             parkingSlot.parkVehicle(new ParkingSpot(0,3,new Vehicle("JK23H9807")));
-            parkingSlot.parkVehicle(new ParkingSpot(0,4,new Vehicle("TS91G1267")));
-            parkingSlot.parkVehicle(new ParkingSpot(0,5,new Vehicle("MK91G1245")));
-            parkingSlot.parkVehicle(new ParkingSpot(0,6,new Vehicle("JK23H9807")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,4,new Vehicle("TS91G1268")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,5,new Vehicle("MK91G1246")));
+            parkingSlot.parkVehicle(new ParkingSpot(0,6,new Vehicle("JK23H9800")));
         } catch (ParkingLotException e) {
             assertEquals(PARKING_LOT_IS_FULL,e.type);
         }

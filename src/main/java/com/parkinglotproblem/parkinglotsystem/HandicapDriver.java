@@ -16,6 +16,7 @@ public class HandicapDriver {
                 if(parkingSlot.parkingData.containsKey(position)) {
                     if(parkingSlot.parkingData.get(position).driverType.equals(ParkingLot.DriverType.NORMAL)) {
                         relocateNormalDriverVehicle(parkingSlots,position,parkingSlot);
+                        parkingSlot.unparkVehicle(parkingSlot.parkingData.get(position).vehicle);
                         return parkHandicapDriverVehicle(parkingSlots,position,parkingSlot,vehicle);
                     }
                 } else

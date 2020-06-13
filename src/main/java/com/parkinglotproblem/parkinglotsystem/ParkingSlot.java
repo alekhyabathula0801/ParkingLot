@@ -19,25 +19,14 @@ public class ParkingSlot {
     public ParkingSlot(int capacity) {
         this.capacity = capacity;
     }
-/*
-    public boolean parkVehicle(Vehicle vehicle,int spotNumber) {
-        if(isFull())
-            throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
-        if(vehicle == null)
-            throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
-        if(parkingData.containsValue(vehicle))
-            throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
-        if(parkingData.containsKey(spotNumber))
-            throw new ParkingLotException("Slot occupied", ParkingLotException.ExceptionType.SLOT_OCCUPIED);
-        parkingData.put(spotNumber,vehicle);
-        if(isFull()) {
-            new AirportSecurity().getParkingLotStatus(true);
-            parkingLotOwner.getParkingLotStatus(true);
-        }
-        return true;
-    }*/
 
     public boolean parkVehicle(ParkingSpot parkingSpot) {
+        if(isFull())
+            throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
+        if(isVehicleParked(parkingSpot.vehicle))
+            throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
+        if(parkingData.containsKey(parkingSpot.position))
+            throw new ParkingLotException("Slot occupied", ParkingLotException.ExceptionType.SLOT_OCCUPIED);
         parkingData.put(parkingSpot.position,parkingSpot);
         if(isFull()) {
             new AirportSecurity().getParkingLotStatus(true);
@@ -47,7 +36,7 @@ public class ParkingSlot {
     }
 
     public boolean isVehicleParked(Vehicle vehicle) {
-                return parkingData.entrySet()
+        return parkingData.entrySet()
                           .stream()
                           .anyMatch(element -> element.getValue().vehicle.equals(vehicle));
     }

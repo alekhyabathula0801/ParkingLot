@@ -1,5 +1,8 @@
 package com.parkinglotproblem.parkinglotsystem;
 
+import com.parkinglotproblem.airportmanagement.AirportSecurity;
+import com.parkinglotproblem.exception.ParkingLotException;
+import com.parkinglotproblem.parkinglotowner.ParkingLotOwner;
 import com.parkinglotproblem.vehicle.Vehicle;
 
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ public class ParkingLot {
     int parkingLotSize;
     List<ParkingSpot> parkingSpots = new ArrayList<>();
     List<ParkingSlot> parkingSlots = new ArrayList<>();
+    ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
 
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
         this.parkingSlots.add(parkingSlot);
@@ -21,7 +25,14 @@ public class ParkingLot {
     }
 
     public boolean parkVehicle(Vehicle vehicle,DriverType driverType) {
-        return parkingSpots.add(new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType));
+        if(parkingSpots.size() == parkingLotSize)
+            throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
+        parkingSpots.add(new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType));
+        if(parkingSpots.size() == parkingLotSize) {
+            new AirportSecurity().getParkingLotStatus(true);
+            parkingLotOwner.getParkingLotStatus(true);
+        }
+        return true;
     }
 
     public int getParkingLotOccupiedSize() {
@@ -30,7 +41,10 @@ public class ParkingLot {
 
     public boolean unparkVehicle(Vehicle vehicle) {
         parkingSlots.get(getParkingSpot(vehicle).slotNumber).unparkVehicle(vehicle);
-        return parkingSpots.remove(getParkingSpot(vehicle));
+        parkingSpots.remove(getParkingSpot(vehicle));
+        if(parkingSpots.size() == parkingLotSize-1)
+            parkingLotOwner.getParkingLotStatus(false);
+        return true;
     }
 
     public ParkingSpot getParkingSpot(Vehicle vehicle) {
@@ -45,9 +59,13 @@ public class ParkingLot {
     }
 
     public ParkingLotStatus getParkingLotStatus() {
-        if(parkingSpots.size() == parkingLotSize)
+        if(isFull())
             return ParkingLotStatus.CLOSED;
         return ParkingLotStatus.OPEN;
+    }
+
+    public boolean isFull() {
+        return parkingSpots.size() == parkingLotSize;
     }
 
 }
