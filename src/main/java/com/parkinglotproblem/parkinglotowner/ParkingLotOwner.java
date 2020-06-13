@@ -8,10 +8,10 @@ public class ParkingLotOwner {
         return status;
     }
 
-    public int assignSlotNumber(List<Integer> occupiedSlots, int capacity){
-        for (int slot=1; slot<=capacity; slot++) {
-            if(!occupiedSlots.contains(slot))
-                return slot;
+    public int assignSpotNumber(List<Integer> occupiedPositions, int capacity){
+        for (int position=1; position<=capacity; position++) {
+            if(!occupiedPositions.contains(position))
+                return position;
         }
         return -1;
     }

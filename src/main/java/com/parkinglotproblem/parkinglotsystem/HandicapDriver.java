@@ -13,10 +13,10 @@ public class HandicapDriver {
     public ParkingSpot parkVehicle(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
         for(ParkingSlot parkingSlot: parkingSlots) {
             for (int position=1; position<=parkingSlot.capacity; position++) {
-                if(parkingSlot.parkingData.containsKey(position)) {
-                    if(parkingSlot.parkingData.get(position).driverType.equals(ParkingLot.DriverType.NORMAL)) {
+                if(parkingSlot.parkingSlotData.containsKey(position)) {
+                    if(parkingSlot.parkingSlotData.get(position).driverType.equals(ParkingLot.DriverType.NORMAL)) {
                         relocateNormalDriverVehicle(parkingSlots,position,parkingSlot);
-                        parkingSlot.unparkVehicle(parkingSlot.parkingData.get(position).vehicle);
+                        parkingSlot.unparkVehicle(parkingSlot.parkingSlotData.get(position).vehicle);
                         return parkHandicapDriverVehicle(parkingSlots,position,parkingSlot,vehicle);
                     }
                 } else
@@ -29,10 +29,11 @@ public class HandicapDriver {
     public void relocateNormalDriverVehicle(List<ParkingSlot> parkingSlots, int position, ParkingSlot parkingSlot) {
         int slotNumber=0;
         for (ParkingSlot slot : parkingSlots) {
-            int  index = new ParkingLotOwner().assignSlotNumber(slot.getOccupiedSlots(), slot.capacity);
+            int  index = new ParkingLotOwner().assignSpotNumber(slot.getOccupiedSpots(), slot.capacity);
             if(index > -1) {
-                parkingSlot.parkingData.get(position).setPosition(index);
-                parkingSlot.parkingData.get(position).setSlotNumber(slotNumber);
+                parkingSlot.parkingSlotData.get(position).setPosition(index);
+                parkingSlot.parkingSlotData.get(position).setSlotNumber(slotNumber);
+                slot.parkVehicle(parkingSlot.parkingSlotData.get(position));
             }
             slotNumber++;
         }

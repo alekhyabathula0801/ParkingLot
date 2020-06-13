@@ -30,7 +30,7 @@ public class ParkingLotOwnerTest {
         List<Integer> slot = new ArrayList<>();
         slot.add(1);
         slot.add(2);
-        int slots = parkingLotOwner.assignSlotNumber(slot,5);
+        int slots = parkingLotOwner.assignSpotNumber(slot,5);
         assertEquals(3,slots);
     }
 
@@ -41,7 +41,7 @@ public class ParkingLotOwnerTest {
             List<Integer> slot = new ArrayList<>();
             slot.add(1);
             slot.add(2);
-            parkingLotOwner.assignSlotNumber(slot, 2);
+            parkingLotOwner.assignSpotNumber(slot, 2);
         } catch (ParkingLotException e) {
             assertEquals(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL, e.type);
         }

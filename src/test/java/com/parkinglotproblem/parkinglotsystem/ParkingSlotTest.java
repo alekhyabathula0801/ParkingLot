@@ -178,7 +178,7 @@ public class ParkingSlotTest {
         parkingSlot.parkVehicle(new ParkingSpot(0,1,new Vehicle("TS91G1267")));
         parkingSlot.parkVehicle(new ParkingSpot(0,2,new Vehicle("MK91G1245")));
         parkingSlot.parkVehicle(new ParkingSpot(0,3,new Vehicle("JK23H9807")));
-        List<Integer> occupiedSlots = parkingSlot.getOccupiedSlots();
+        List<Integer> occupiedSlots = parkingSlot.getOccupiedSpots();
         assertEquals(expectedSlots,occupiedSlots);
     }
 
