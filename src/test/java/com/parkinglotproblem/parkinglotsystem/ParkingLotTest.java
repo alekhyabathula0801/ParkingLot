@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class ParkingLotTest {
 
-    ParkingLot parkingLot;
+    IParkingLot parkingLot;
 
     @Before
     public void setUp() throws Exception {

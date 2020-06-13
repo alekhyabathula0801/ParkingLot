@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ParkingLot {
+public class ParkingLot implements IParkingLot{
 
     enum DriverType {NORMAL,HANDICAPED}
     public enum ParkingLotStatus {OPEN,CLOSED}
     int parkingLotSize;
     List<ParkingSpot> parkingSpots = new ArrayList<>();
     List<ParkingSlot> parkingSlots = new ArrayList<>();
-    ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
 
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
         this.parkingSlots.add(parkingSlot);
@@ -32,7 +31,7 @@ public class ParkingLot {
         parkingSpots.add(new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType));
         if(parkingSpots.size() == parkingLotSize) {
             new AirportSecurity().getParkingLotStatus(true);
-            parkingLotOwner.getParkingLotStatus(true);
+            new ParkingLotOwner().getParkingLotStatus(true);
         }
         return true;
     }
@@ -52,7 +51,7 @@ public class ParkingLot {
         parkingSlots.get(getParkingSpot(vehicle).slotNumber).unparkVehicle(vehicle);
         parkingSpots.remove(getParkingSpot(vehicle));
         if(parkingSpots.size() == parkingLotSize-1)
-            parkingLotOwner.getParkingLotStatus(false);
+            new ParkingLotOwner().getParkingLotStatus(false);
         return true;
     }
 
