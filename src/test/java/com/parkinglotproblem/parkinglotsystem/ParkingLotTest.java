@@ -217,4 +217,12 @@ public class ParkingLotTest {
         assertEquals(expectedList,buleToyotaVehicles);
     }
 
+    @Test
+    public void givenVehiclesToPark_whenFetchForBMW_shouldReturnResults() {
+        List<ParkingSpot> buleToyotaVehicles = parkingLot.getVehiclesData(ParkingLot.FetchBy.BMW);
+        List<ParkingSpot> expectedList = new ArrayList<>();
+        expectedList.add(new ParkingSpot(1,1,new Vehicle("KN90H1234",SMALL,RED,"BMW")));
+        assertEquals(expectedList,buleToyotaVehicles);
+    }
+
 }
