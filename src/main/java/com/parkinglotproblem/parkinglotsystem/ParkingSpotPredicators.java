@@ -14,6 +14,8 @@ public class ParkingSpotPredicators {
         predicate.put(ParkingLot.FetchBy.BLUE_TOYATO,parkingSpot -> parkingSpot.vehicle.vehicleColor==
                       Vehicle.VehicleColor.BLUE && parkingSpot.vehicle.brand == "TOYOTA");
         predicate.put(ParkingLot.FetchBy.BMW,parkingSpot -> parkingSpot.vehicle.brand == "BMW");
+        predicate.put(ParkingLot.FetchBy.HANDICAPED_DRIVER,parkingSpot -> parkingSpot.driverType == ParkingLot.DriverType.HANDICAPED
+                      && parkingSpot.slotNumber == 1);
     }
 
     public Predicate<ParkingSpot> getPredicate(ParkingLot.FetchBy fetchBy) {

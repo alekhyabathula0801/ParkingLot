@@ -15,7 +15,7 @@ public class ParkingLot implements IParkingLot{
     enum DriverType {NORMAL,HANDICAPED}
     public enum ParkingLotStatus {OPEN,CLOSED}
     int parkingLotSize;
-    enum FetchBy{WHITE,BLUE_TOYATO,BMW}
+    enum FetchBy{WHITE,BLUE_TOYATO,BMW,HANDICAPED_DRIVER}
 
     List<ParkingSlot> parkingSlots = new ArrayList<>();
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
