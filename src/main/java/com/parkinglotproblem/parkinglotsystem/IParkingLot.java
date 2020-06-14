@@ -9,7 +9,6 @@ public interface IParkingLot {
     public boolean isVehicleParked(Vehicle vehicle);
     public boolean unparkVehicle(Vehicle vehicle);
     public ParkingSpot getParkingSpot(Vehicle vehicle);
-    public int getSpotNumber(Vehicle vehicle);
     public ParkingLot.ParkingLotStatus getParkingLotStatus();
     public boolean isFull();
 

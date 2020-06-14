@@ -1,7 +1,6 @@
 package com.parkinglotproblem.parkinglotsystem;
 
 import com.parkinglotproblem.exception.ParkingLotException;
-import com.parkinglotproblem.parkinglotowner.ParkingLotOwner;
 import com.parkinglotproblem.vehicle.Vehicle;
 
 import java.util.List;
@@ -27,16 +26,9 @@ public class HandicapDriver {
     }
 
     public void relocateNormalDriverVehicle(List<ParkingSlot> parkingSlots, int position, ParkingSlot parkingSlot) {
-        int slotNumber=0;
-        for (ParkingSlot slot : parkingSlots) {
-            int  index = new ParkingLotOwner().assignSpotNumber(slot.getOccupiedSpots(), slot.capacity);
-            if(index > -1) {
-                parkingSlot.parkingSlotData.get(position).setPosition(index);
-                parkingSlot.parkingSlotData.get(position).setSlotNumber(slotNumber);
-                slot.parkVehicle(parkingSlot.parkingSlotData.get(position));
-            }
-            slotNumber++;
-        }
+        ParkingSpot parkingSpot = new NormalDriver().parkVehicle(parkingSlot.parkingSlotData.get(position).vehicle,parkingSlots);
+        parkingSlot.parkingSlotData.get(position).setSpotNumber(parkingSpot.spotNumber);
+        parkingSlot.parkingSlotData.get(position).setSlotNumber(parkingSpot.slotNumber);
     }
 
     public ParkingSpot parkHandicapDriverVehicle(int slotNumber, int position, ParkingSlot parkingSlot, Vehicle vehicle) {

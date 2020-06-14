@@ -29,7 +29,7 @@ public class ParkingLot implements IParkingLot{
         if(isVehicleParked(vehicle))
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
         parkingSpots.add(new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType));
-        if(parkingSpots.size() == parkingLotSize) {
+        if(isFull()) {
             new AirportSecurity().getParkingLotStatus(true);
             new ParkingLotOwner().getParkingLotStatus(true);
         }
@@ -60,11 +60,6 @@ public class ParkingLot implements IParkingLot{
                            .filter(spot -> spot.vehicle.equals(vehicle))
                            .findFirst()
                            .get();
-    }
-
-    public int getSpotNumber(Vehicle vehicle) {
-        return parkingSlots.get(getParkingSpot(vehicle).slotNumber)
-                           .getSpotNumber(vehicle);
     }
 
     public ParkingLotStatus getParkingLotStatus() {

@@ -7,14 +7,14 @@ import java.util.Objects;
 public class ParkingSpot {
 
     public int slotNumber;
-    public int position;
+    public int spotNumber;
     public Vehicle vehicle;
     public long inTime;
     public ParkingLot.DriverType driverType;
 
-    public ParkingSpot(int slotNumber, int position, Vehicle vehicle, long inTime, ParkingLot.DriverType driverType) {
+    public ParkingSpot(int slotNumber, int spotNumber, Vehicle vehicle, long inTime, ParkingLot.DriverType driverType) {
         this.slotNumber = slotNumber;
-        this.position = position;
+        this.spotNumber = spotNumber;
         this.vehicle = vehicle;
         this.inTime = inTime;
         this.driverType = driverType;
@@ -24,9 +24,9 @@ public class ParkingSpot {
         this.slotNumber = slotNumber;
     }
 
-    public ParkingSpot(int slotNumber, int position, Vehicle vehicle) {
+    public ParkingSpot(int slotNumber, int spotNumber, Vehicle vehicle) {
         this.slotNumber = slotNumber;
-        this.position = position;
+        this.spotNumber = spotNumber;
         this.vehicle = vehicle;
     }
 
@@ -36,12 +36,12 @@ public class ParkingSpot {
         if (o == null || getClass() != o.getClass()) return false;
         ParkingSpot that = (ParkingSpot) o;
         return slotNumber == that.slotNumber &&
-                position == that.position &&
+                spotNumber == that.spotNumber &&
                 Objects.equals(vehicle, that.vehicle);
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setSpotNumber(int spotNumber) {
+        this.spotNumber = spotNumber;
     }
 
 }

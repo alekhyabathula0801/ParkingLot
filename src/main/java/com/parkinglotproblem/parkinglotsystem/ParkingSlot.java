@@ -11,7 +11,7 @@ import java.util.Map;
 public class ParkingSlot {
 
     public int capacity;
-    Map<Integer,ParkingSpot> parkingSlotData = new HashMap<>();
+    public Map<Integer,ParkingSpot> parkingSlotData = new HashMap<>();
 
     public ParkingSlot(int capacity) {
         this.capacity = capacity;
@@ -22,9 +22,9 @@ public class ParkingSlot {
             throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
         if(isVehicleParked(parkingSpot.vehicle))
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
-        if(parkingSlotData.containsKey(parkingSpot.position))
+        if(parkingSlotData.containsKey(parkingSpot.spotNumber))
             throw new ParkingLotException("Slot occupied", ParkingLotException.ExceptionType.SLOT_OCCUPIED);
-        parkingSlotData.put(parkingSpot.position,parkingSpot);
+        parkingSlotData.put(parkingSpot.spotNumber,parkingSpot);
         return true;
     }
 
@@ -40,6 +40,19 @@ public class ParkingSlot {
 
     public List<Integer> getOccupiedSpots() {
         return new ArrayList<>(parkingSlotData.keySet());
+    }
+
+    public List<Integer> getUnoccupiedSpots() {
+        List<Integer> unoccupiedSpots = new ArrayList<>();
+        for(int spot=1; spot<=capacity; spot++) {
+            if(!parkingSlotData.containsKey(spot))
+                unoccupiedSpots.add(spot);
+        }
+        return unoccupiedSpots;
+    }
+
+    public boolean isOpen() {
+        return !isFull();
     }
 
     public int getSpotNumber(Vehicle vehicle) {
