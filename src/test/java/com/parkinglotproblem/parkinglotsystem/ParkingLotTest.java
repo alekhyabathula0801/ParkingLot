@@ -5,7 +5,11 @@ import com.parkinglotproblem.vehicle.Vehicle;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.parkinglotproblem.parkinglotsystem.ParkingLot.ParkingLotStatus.*;
+import static com.parkinglotproblem.vehicle.Vehicle.VehicleColor.*;
 import static com.parkinglotproblem.vehicle.Vehicle.VehicleSize.*;
 import static org.junit.Assert.*;
 
@@ -16,19 +20,19 @@ public class ParkingLotTest {
     @Before
     public void setUp() throws Exception {
         parkingLot = new ParkingLot(new ParkingSlot(2),new ParkingSlot(3));
-        parkingLot.parkVehicle(new Vehicle("AP10K0987",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.parkVehicle(new Vehicle("KN90H1234",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.parkVehicle(new Vehicle("AS90H1234",SMALL), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("AP10K0987",SMALL, WHITE), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("KN90H1234",SMALL,RED), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("AS90H1234",SMALL,BLACK), ParkingLot.DriverType.NORMAL);
     }
 
     @Test
     public void given2Lots_when3VehiclesAdded_shouldReturnResults() {
-        ParkingSpot vehicle1Details = parkingLot.getParkingSpot(new Vehicle("AP10K0987",SMALL));
-        ParkingSpot vehicle2Details = parkingLot.getParkingSpot(new Vehicle("KN90H1234",SMALL));
-        ParkingSpot vehicle3Details = parkingLot.getParkingSpot(new Vehicle("AS90H1234",SMALL));
-        ParkingSpot expectedVehicle1Details = new ParkingSpot(0,1,new Vehicle("AP10K0987",SMALL));
-        ParkingSpot expectedVehicle2Details = new ParkingSpot(1,1,new Vehicle("KN90H1234",SMALL));
-        ParkingSpot expectedVehicle3Details = new ParkingSpot(0,2,new Vehicle("AS90H1234",SMALL));
+        ParkingSpot vehicle1Details = parkingLot.getParkingSpot(new Vehicle("AP10K0987",SMALL,WHITE));
+        ParkingSpot vehicle2Details = parkingLot.getParkingSpot(new Vehicle("KN90H1234",SMALL,RED));
+        ParkingSpot vehicle3Details = parkingLot.getParkingSpot(new Vehicle("AS90H1234",SMALL,BLACK));
+        ParkingSpot expectedVehicle1Details = new ParkingSpot(0,1,new Vehicle("AP10K0987",SMALL,WHITE));
+        ParkingSpot expectedVehicle2Details = new ParkingSpot(1,1,new Vehicle("KN90H1234",SMALL,RED));
+        ParkingSpot expectedVehicle3Details = new ParkingSpot(0,2,new Vehicle("AS90H1234",SMALL,BLACK));
         assertEquals(expectedVehicle1Details,vehicle1Details);
         assertEquals(expectedVehicle2Details,vehicle2Details);
         assertEquals(expectedVehicle3Details,vehicle3Details);
@@ -36,19 +40,19 @@ public class ParkingLotTest {
 
     @Test
     public void given2Lots_when5VehiclesAdded_shouldReturnResults() {
-        parkingLot.parkVehicle(new Vehicle("AS90H1233",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.parkVehicle(new Vehicle("AS90H1230",SMALL), ParkingLot.DriverType.NORMAL);
-        ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("AS90H1230",SMALL));
-        ParkingSpot expectedVehicle4Details = new ParkingSpot(1,3,new Vehicle("AS90H1230",SMALL));
+        parkingLot.parkVehicle(new Vehicle("AS90H1233",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("AS90H1230",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("AS90H1230",SMALL,WHITE));
+        ParkingSpot expectedVehicle4Details = new ParkingSpot(1,3,new Vehicle("AS90H1230",SMALL,WHITE));
         assertEquals(expectedVehicle4Details,vehicle4Details);
     }
 
     @Test
     public void given2LotsWithDifferentSize_whenFull_shouldThrowException() {
         try {
-            parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL), ParkingLot.DriverType.NORMAL);
-            parkingLot.parkVehicle(new Vehicle("KN90H1233",SMALL), ParkingLot.DriverType.NORMAL);
-            parkingLot.parkVehicle(new Vehicle("AS90H1233",SMALL), ParkingLot.DriverType.NORMAL);
+            parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+            parkingLot.parkVehicle(new Vehicle("KN90H1233",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+            parkingLot.parkVehicle(new Vehicle("AS90H1233",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
         } catch (ParkingLotException e) {
             assertEquals(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,e.type);
         }
@@ -56,13 +60,13 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLotWith2Slots_whenVehicleUnparked_shouldReturnResults() {
-        boolean status = parkingLot.unparkVehicle(new Vehicle("AS90H1234",SMALL));
+        boolean status = parkingLot.unparkVehicle(new Vehicle("AS90H1234",SMALL,WHITE));
         assertTrue(status);
     }
 
     @Test
     public void givenParkingLotWith2Slots_whenVehicleParked_shouldReturnResults() {
-        boolean status = parkingLot.parkVehicle(new Vehicle("AS90H1239",SMALL), ParkingLot.DriverType.NORMAL);
+        boolean status = parkingLot.parkVehicle(new Vehicle("AS90H1239",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
         assertTrue(status);
     }
 
@@ -74,15 +78,15 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_whenFull_shouldReturnClosed() {
-        parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.parkVehicle(new Vehicle("KN90H1233",SMALL), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("KN90H1233",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
         ParkingLot.ParkingLotStatus status = parkingLot.getParkingLotStatus();
         assertEquals(CLOSED,status);
     }
 
     @Test
     public void givenParkingLot_whenNotFull_shouldReturnOpen() {
-        parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
         ParkingLot.ParkingLotStatus status = parkingLot.getParkingLotStatus();
         assertEquals(OPEN,status);
     }
@@ -90,7 +94,7 @@ public class ParkingLotTest {
     @Test
     public void givenVehicleToPark_whenIfPresent_shouldThrowException() {
         try {
-            parkingLot.parkVehicle(new Vehicle("AP10K0987",SMALL), ParkingLot.DriverType.NORMAL);
+            parkingLot.parkVehicle(new Vehicle("AP10K0987",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
         } catch (ParkingLotException e) {
             assertEquals(ParkingLotException.ExceptionType.VEHICLE_EXISTS,e.type);
         }
@@ -98,91 +102,91 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLotWith2Slots_whenVehicleUnparkedAndOtherVehicleParked_shouldReturnResults() {
-        parkingLot.unparkVehicle(new Vehicle("KN90H1234",SMALL));
-        parkingLot.parkVehicle(new Vehicle("WA0K1230",SMALL), ParkingLot.DriverType.NORMAL);
-        ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("WA0K1230",SMALL));
-        ParkingSpot expectedVehicle4Details = new ParkingSpot(1,1,new Vehicle("WA0K1230",SMALL));
+        parkingLot.unparkVehicle(new Vehicle("KN90H1234",SMALL,WHITE));
+        parkingLot.parkVehicle(new Vehicle("WA0K1230",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("WA0K1230",SMALL,WHITE));
+        ParkingSpot expectedVehicle4Details = new ParkingSpot(1,1,new Vehicle("WA0K1230",SMALL,WHITE));
         assertEquals(expectedVehicle4Details,vehicle4Details);
     }
 
     @Test
     public void givenHandicapDriverVehicleToPark_shouldReturnResults() {
-        parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL), ParkingLot.DriverType.HANDICAPED);
-        ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("SK09A5678",SMALL));
-        ParkingSpot expectedVehicle4Details = new ParkingSpot(0,1,new Vehicle("SK09A5678",SMALL));
+        parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL,WHITE), ParkingLot.DriverType.HANDICAPED);
+        ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE));
+        ParkingSpot expectedVehicle4Details = new ParkingSpot(0,1,new Vehicle("SK09A5678",SMALL,WHITE));
         assertEquals(expectedVehicle4Details,vehicle4Details);
     }
 
     @Test
     public void givenVehicleToPark_whenHandicapDriver_shouldReturnResults() {
         IParkingLot parkingLot = new ParkingLot(new ParkingSlot(2),new ParkingSlot(3));
-        parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL), ParkingLot.DriverType.HANDICAPED);
-        ParkingSpot vehicle1Details = parkingLot.getParkingSpot(new Vehicle("SK09A5678",SMALL));
-        ParkingSpot expectedVehicle1Details = new ParkingSpot(0,1,new Vehicle("SK09A5678",SMALL));
+        parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL,WHITE), ParkingLot.DriverType.HANDICAPED);
+        ParkingSpot vehicle1Details = parkingLot.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE));
+        ParkingSpot expectedVehicle1Details = new ParkingSpot(0,1,new Vehicle("SK09A5678",SMALL,WHITE));
         assertEquals(expectedVehicle1Details,vehicle1Details);
     }
 
     @Test
     public void givenVehicleToPark_whenHandicapDriversToPark_shouldReturnResults() {
         IParkingLot parkingLot = new ParkingLot(new ParkingSlot(2),new ParkingSlot(3));
-        parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL), ParkingLot.DriverType.HANDICAPED);
-        parkingLot.parkVehicle(new Vehicle("KK09A5678",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.parkVehicle(new Vehicle("SK09A5679",SMALL), ParkingLot.DriverType.HANDICAPED);
-        ParkingSpot vehicle3Details = parkingLot.getParkingSpot(new Vehicle("SK09A5679",SMALL));
-        ParkingSpot expectedVehicle3Details = new ParkingSpot(0,2,new Vehicle("SK09A5679",SMALL));
+        parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL,WHITE), ParkingLot.DriverType.HANDICAPED);
+        parkingLot.parkVehicle(new Vehicle("KK09A5678",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("SK09A5679",SMALL,WHITE), ParkingLot.DriverType.HANDICAPED);
+        ParkingSpot vehicle3Details = parkingLot.getParkingSpot(new Vehicle("SK09A5679",SMALL,WHITE));
+        ParkingSpot expectedVehicle3Details = new ParkingSpot(0,2,new Vehicle("SK09A5679",SMALL,WHITE));
         assertEquals(expectedVehicle3Details,vehicle3Details);
     }
 
     @Test
     public void givenHandicapDriverVehicleToPark_whenParked_shouldReturnResults() {
         IParkingLot parkingLot = new ParkingLot(new ParkingSlot(2),new ParkingSlot(3));
-        parkingLot.parkVehicle(new Vehicle("KK09A5678",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL), ParkingLot.DriverType.HANDICAPED);
-        ParkingSpot vehicle1Details = parkingLot.getParkingSpot(new Vehicle("KK09A5678",SMALL));
-        ParkingSpot expectedVehicle1Details = new ParkingSpot(1,1,new Vehicle("KK09A5678",SMALL));
-        ParkingSpot vehicle2Details = parkingLot.getParkingSpot(new Vehicle("SK09A5678",SMALL));
-        ParkingSpot expectedVehicle2Details = new ParkingSpot(0,1,new Vehicle("SK09A5678",SMALL));
+        parkingLot.parkVehicle(new Vehicle("KK09A5678",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL,WHITE), ParkingLot.DriverType.HANDICAPED);
+        ParkingSpot vehicle1Details = parkingLot.getParkingSpot(new Vehicle("KK09A5678",SMALL,WHITE));
+        ParkingSpot expectedVehicle1Details = new ParkingSpot(1,1,new Vehicle("KK09A5678",SMALL,WHITE));
+        ParkingSpot vehicle2Details = parkingLot.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE));
+        ParkingSpot expectedVehicle2Details = new ParkingSpot(0,1,new Vehicle("SK09A5678",SMALL,WHITE));
         assertEquals(expectedVehicle1Details,vehicle1Details);
         assertEquals(expectedVehicle2Details,vehicle2Details);
     }
 
     @Test
     public void givenParkingLot_whenVehicleIsPresent_shouldReturnTrue() {
-        assertTrue(parkingLot.isVehicleParked(new Vehicle("AP10K0987",SMALL)));
+        assertTrue(parkingLot.isVehicleParked(new Vehicle("AP10K0987",SMALL,WHITE)));
     }
 
     @Test
     public void givenParkingLot_whenVehicleIsNotPresent_shouldReturnFalse() {
-        assertFalse(parkingLot.isVehicleParked(new Vehicle("AP10K0980",SMALL)));
+        assertFalse(parkingLot.isVehicleParked(new Vehicle("AP10K0980",SMALL,WHITE)));
     }
 
     @Test
     public void givenLargeVehicleToPark_whenParked_shouldReturnResults() {
         IParkingLot parkingLot = new ParkingLot(new ParkingSlot(3));
-        parkingLot.parkVehicle(new Vehicle("AP10K0980",LARGE), ParkingLot.DriverType.NORMAL);
-        ParkingSpot vehicle1Details = parkingLot.getParkingSpot(new Vehicle("AP10K0980",LARGE));
-        ParkingSpot expectedVehicle1Details = new ParkingSpot(0,1,new Vehicle("AP10K0980",LARGE));
+        parkingLot.parkVehicle(new Vehicle("AP10K0980",LARGE,WHITE), ParkingLot.DriverType.NORMAL);
+        ParkingSpot vehicle1Details = parkingLot.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE));
+        ParkingSpot expectedVehicle1Details = new ParkingSpot(0,1,new Vehicle("AP10K0980",LARGE,WHITE));
         assertEquals(expectedVehicle1Details,vehicle1Details);
     }
 
     @Test
     public void givenLargeAndSmallVehiclesToPark_whenParked_shouldReturnResults() {
         IParkingLot parkingLot = new ParkingLot(new ParkingSlot(4));
-        parkingLot.parkVehicle(new Vehicle("AP10K0987",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.parkVehicle(new Vehicle("KN90H1234",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.parkVehicle(new Vehicle("AS90H1234",SMALL), ParkingLot.DriverType.NORMAL);
-        parkingLot.unparkVehicle(new Vehicle("KN90H1234",SMALL));
-        parkingLot.parkVehicle(new Vehicle("AP10K0980",LARGE), ParkingLot.DriverType.NORMAL);
-        ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("AP10K0980",LARGE));
-        ParkingSpot expectedVehicle4Details = new ParkingSpot(0,2,new Vehicle("AP10K0980",LARGE));
+        parkingLot.parkVehicle(new Vehicle("AP10K0987",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("KN90H1234",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("AS90H1234",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+        parkingLot.unparkVehicle(new Vehicle("KN90H1234",SMALL,WHITE));
+        parkingLot.parkVehicle(new Vehicle("AP10K0980",LARGE,WHITE), ParkingLot.DriverType.NORMAL);
+        ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE));
+        ParkingSpot expectedVehicle4Details = new ParkingSpot(0,2,new Vehicle("AP10K0980",LARGE,WHITE));
         assertEquals(expectedVehicle4Details,vehicle4Details);
     }
 
     @Test
     public void givenLargeVehicleToPark_whenSpaceNotAvailable_shouldThrowException() {
         try {
-            parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL), ParkingLot.DriverType.NORMAL);
-            parkingLot.parkVehicle(new Vehicle("KN90H1233",LARGE), ParkingLot.DriverType.NORMAL);
+            parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,WHITE), ParkingLot.DriverType.NORMAL);
+            parkingLot.parkVehicle(new Vehicle("KN90H1233",LARGE,WHITE), ParkingLot.DriverType.NORMAL);
         } catch (ParkingLotException e) {
             assertEquals(ParkingLotException.ExceptionType.PARKING_LOT_SIZE_IS_LOW,e.type);
         }
@@ -190,11 +194,19 @@ public class ParkingLotTest {
 
     @Test
     public void givenSmallAndLargeVehicles_whenLargeVehicleUnparked_shouldReturnResults() {
-        parkingLot.parkVehicle(new Vehicle("KN90H1233",LARGE), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("KN90H1233",LARGE,WHITE), ParkingLot.DriverType.NORMAL);
         int size = parkingLot.getParkingLotOccupiedSize();
-        parkingLot.unparkVehicle(new Vehicle("KN90H1233",LARGE));
+        parkingLot.unparkVehicle(new Vehicle("KN90H1233",LARGE,WHITE));
         int updatedSize = parkingLot.getParkingLotOccupiedSize();
         assertEquals(size-2,updatedSize);
+    }
+
+    @Test
+    public void givenVehiclesToPark_whenParked_shouldReturnWhiteColorVehiclesParkingSpot() {
+        List<ParkingSpot> whiteColorVehicles = parkingLot.getVehiclesData();
+        List<ParkingSpot> expectedList = new ArrayList<>();
+        expectedList.add(new ParkingSpot(0,1,new Vehicle("AP10K0987",SMALL,WHITE)));
+        assertEquals(expectedList,whiteColorVehicles);
     }
 
 }

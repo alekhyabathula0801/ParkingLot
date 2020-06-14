@@ -8,6 +8,7 @@ import com.parkinglotproblem.vehicle.Vehicle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ParkingLot implements IParkingLot{
 
@@ -82,6 +83,12 @@ public class ParkingLot implements IParkingLot{
                     .map(ParkingSlot::getParkingSpotData)
                     .forEach(parkingSpots1 -> parkingSpots.addAll(parkingSpots1));
         return parkingSpots;
+    }
+
+    public List<ParkingSpot> getVehiclesData() {
+        return getParkingSpotsData().stream()
+                                    .filter(parkingSpot -> parkingSpot.vehicle.vehicleColor == Vehicle.VehicleColor.WHITE)
+                                    .collect(Collectors.toList());
     }
 
 }

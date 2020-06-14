@@ -13,16 +13,19 @@ public class Vehicle {
             this.size = size;
         }
     }
+    public enum VehicleColor{WHITE,BLACK,RED}
     public String vehicleNumber;
     public VehicleSize vehicleSize;
+    public VehicleColor vehicleColor;
 
-    public Vehicle(String vehicleNumber,VehicleSize vehicleSize) {
+    public Vehicle(String vehicleNumber,VehicleSize vehicleSize,VehicleColor vehicleColor) {
         if(vehicleNumber == null)
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
         if(vehicleNumber.length() == 0)
             throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
         this.vehicleNumber = vehicleNumber;
         this.vehicleSize = vehicleSize;
+        this.vehicleColor = vehicleColor;
     }
 
     @Override
