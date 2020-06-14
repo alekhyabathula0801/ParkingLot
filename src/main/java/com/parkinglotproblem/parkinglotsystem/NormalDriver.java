@@ -7,16 +7,14 @@ import java.util.List;
 
 public class NormalDriver {
 
-    public ParkingSpot parkVehicle(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
+    public boolean parkVehicle(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
         ParkingSlot parkingSlot = parkingSlots.stream()
                                               .filter(ParkingSlot::isOpen)
                                               .min(Comparator.comparing(ParkingSlot::getOccupiedSize))
                                               .get();
         int slotNumber = parkingSlots.indexOf(parkingSlot);
-        ParkingSpot parkingSpot = new ParkingSpot(slotNumber,parkingSlot.getUnoccupiedSpots().get(0),vehicle,
-                                                  System.currentTimeMillis(), ParkingLot.DriverType.NORMAL);
-        parkingSlots.get(slotNumber).parkVehicle(parkingSpot);
-        return parkingSpot;
+        return parkingSlots.get(slotNumber).parkVehicle(new ParkingSpot(slotNumber,parkingSlot.getUnoccupiedSpots().get(0),
+                                                        vehicle,System.currentTimeMillis(), ParkingLot.DriverType.NORMAL));
     }
 
 }

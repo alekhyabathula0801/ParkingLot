@@ -9,7 +9,7 @@ import static com.parkinglotproblem.parkinglotsystem.ParkingLot.DriverType.HANDI
 
 public class HandicapDriver {
 
-    public ParkingSpot parkVehicle(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
+    public boolean parkVehicle(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
         for(ParkingSlot parkingSlot: parkingSlots) {
             for(int position=1; position<=parkingSlot.capacity; position++) {
                 if(parkingSlot.parkingSlotData.containsKey(position)) {
@@ -29,10 +29,8 @@ public class HandicapDriver {
         parkingSlot.unparkVehicle(parkingSlot.parkingSlotData.get(position).vehicle);
     }
 
-    public ParkingSpot parkHandicapDriverVehicle(int slotNumber, int position, ParkingSlot parkingSlot, Vehicle vehicle) {
-        ParkingSpot parkingSpot = new ParkingSpot(slotNumber,position,vehicle,System.currentTimeMillis(),HANDICAPED);
-        parkingSlot.parkVehicle(parkingSpot);
-        return parkingSpot;
+    public boolean parkHandicapDriverVehicle(int slotNumber, int position, ParkingSlot parkingSlot, Vehicle vehicle) {
+        return parkingSlot.parkVehicle(new ParkingSpot(slotNumber,position,vehicle,System.currentTimeMillis(),HANDICAPED));
     }
 
 }

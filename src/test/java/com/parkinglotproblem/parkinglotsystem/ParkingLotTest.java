@@ -240,7 +240,7 @@ public class ParkingLotTest {
         IParkingLot parkingLot = new ParkingLot(new ParkingSlot(1),new ParkingSlot(1));
         parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL,WHITE,"TOYOTA"), ParkingLot.DriverType.HANDICAPED);
         parkingLot.parkVehicle(new Vehicle("SK09A5679",SMALL,WHITE,"TOYOTA"), ParkingLot.DriverType.HANDICAPED);
-        List<ParkingSpot> handicapedDriverVehicles = parkingLot.getVehiclesData(ParkingLot.FetchBy.HANDICAPED_DRIVER);
+        List<ParkingSpot> handicapedDriverVehicles = parkingLot.getVehiclesData(ParkingLot.FetchBy.HANDICAP_DRIVER);
         List<ParkingSpot> expectedList = new ArrayList<>();
         expectedList.add(new ParkingSpot(1,1,new Vehicle("SK09A5679",SMALL,WHITE,"TOYOTA")));
         assertEquals(expectedList,handicapedDriverVehicles);

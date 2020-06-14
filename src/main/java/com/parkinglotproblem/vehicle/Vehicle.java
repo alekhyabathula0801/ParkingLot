@@ -13,7 +13,9 @@ public class Vehicle {
             this.size = size;
         }
     }
+
     public enum VehicleColor{WHITE,BLACK,RED,BLUE}
+
     public String vehicleNumber;
     public VehicleSize vehicleSize;
     public VehicleColor vehicleColor;

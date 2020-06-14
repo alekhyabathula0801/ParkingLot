@@ -21,8 +21,8 @@ public class ParkingSpot {
         this.driverType = driverType;
     }
 
-    public void setSlotNumber(int slotNumber) {
-        this.slotNumber = slotNumber;
+    public void setOutTime(long outTime) {
+        this.outTime = outTime;
     }
 
     public ParkingSpot(int slotNumber, int spotNumber, Vehicle vehicle) {
@@ -41,11 +41,4 @@ public class ParkingSpot {
                 Objects.equals(vehicle, that.vehicle);
     }
 
-    public void setSpotNumber(int spotNumber) {
-        this.spotNumber = spotNumber;
-    }
-
-    public void setOutTime(long outTime) {
-        this.outTime = outTime;
-    }
 }
