@@ -11,7 +11,7 @@ public class HandicapDriver {
 
     public ParkingSpot parkVehicle(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
         for(ParkingSlot parkingSlot: parkingSlots) {
-            for (int position=1; position<=parkingSlot.capacity; position++) {
+            for(int position=1; position<=parkingSlot.capacity; position++) {
                 if(parkingSlot.parkingSlotData.containsKey(position)) {
                     if(parkingSlot.parkingSlotData.get(position).driverType.equals(ParkingLot.DriverType.NORMAL)) {
                         relocateNormalDriverVehicle(parkingSlots,position,parkingSlot);
