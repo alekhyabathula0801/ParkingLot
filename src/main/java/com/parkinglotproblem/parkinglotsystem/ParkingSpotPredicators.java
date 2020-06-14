@@ -16,6 +16,8 @@ public class ParkingSpotPredicators {
         predicate.put(ParkingLot.FetchBy.BMW,parkingSpot -> parkingSpot.vehicle.brand == "BMW");
         predicate.put(ParkingLot.FetchBy.HANDICAPED_DRIVER,parkingSpot -> parkingSpot.driverType == ParkingLot.DriverType.HANDICAPED
                       && parkingSpot.slotNumber == 1);
+        predicate.put(ParkingLot.FetchBy.THIRTY_MINUTES,parkingSpot -> System.currentTimeMillis()/60000.0-parkingSpot.inTime/60000.0 < 30.0);
+
     }
 
     public Predicate<ParkingSpot> getPredicate(ParkingLot.FetchBy fetchBy) {
