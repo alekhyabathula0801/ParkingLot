@@ -14,9 +14,7 @@ public class ParkingLot implements IParkingLot{
     enum DriverType {NORMAL,HANDICAPED}
     public enum ParkingLotStatus {OPEN,CLOSED}
     int parkingLotSize;
-    List<ParkingSpot> parkingSpots = new ArrayList<>();
     List<ParkingSlot> parkingSlots = new ArrayList<>();
-
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
         this.parkingSlots.add(parkingSlot);
         this.parkingSlots.addAll(Arrays.asList(parkingSlots));
@@ -28,7 +26,9 @@ public class ParkingLot implements IParkingLot{
             throw new ParkingLotException("Parking lot is Full", ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL);
         if(isVehicleParked(vehicle))
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
-        parkingSpots.add(new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType));
+        if(parkingLotSize-getParkingLotOccupiedSize()<vehicle.vehicleSize.size)
+            throw new ParkingLotException("Vehicle size is more han available spots",ParkingLotException.ExceptionType.PARKING_LOT_SIZE_IS_LOW);
+        new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType);
         if(isFull()) {
             new AirportSecurity().getParkingLotStatus(true);
             new ParkingLotOwner().getParkingLotStatus(true);
@@ -36,28 +36,26 @@ public class ParkingLot implements IParkingLot{
         return true;
     }
 
-    public int getParkingLotOccupiedSize() {
-        return parkingSpots.size();
-    }
-
     public boolean isVehicleParked(Vehicle vehicle) {
-        return parkingSpots.stream()
-                           .anyMatch(spot -> spot.vehicle.equals(vehicle));
+        return parkingSlots.stream().anyMatch(parkingSlot -> parkingSlot.isVehicleParked(vehicle));
     }
 
     public boolean unparkVehicle(Vehicle vehicle) {
         if(!isVehicleParked(vehicle))
             throw new ParkingLotException("Vehicle Doesn't Exists", ParkingLotException.ExceptionType.NO_VEHICLE);
-        parkingSlots.get(getParkingSpot(vehicle).slotNumber).unparkVehicle(vehicle);
-        parkingSpots.remove(getParkingSpot(vehicle));
-        if(parkingSpots.size() == parkingLotSize-1)
+        getParkingSlot(vehicle).unparkVehicle(vehicle);
+        if(getParkingLotOccupiedSize() == parkingLotSize-1)
             new ParkingLotOwner().getParkingLotStatus(false);
         return true;
     }
 
     public ParkingSpot getParkingSpot(Vehicle vehicle) {
-        return parkingSpots.stream()
-                           .filter(spot -> spot.vehicle.equals(vehicle))
+        return getParkingSlot(vehicle).getParkingSpot(vehicle);
+    }
+
+    public ParkingSlot getParkingSlot(Vehicle vehicle) {
+        return parkingSlots.stream()
+                           .filter(parkingSlot -> parkingSlot.isVehicleParked(vehicle))
                            .findFirst()
                            .get();
     }
@@ -68,8 +66,22 @@ public class ParkingLot implements IParkingLot{
         return ParkingLotStatus.OPEN;
     }
 
+    public int getParkingLotOccupiedSize() {
+        return parkingSlots.stream()
+                           .mapToInt(parkingSlot -> parkingSlot.parkingSlotData.size())
+                           .sum();
+    }
+
     public boolean isFull() {
-        return parkingSpots.size() == parkingLotSize;
+        return getParkingLotOccupiedSize() == parkingLotSize;
+    }
+
+    public List<ParkingSpot> getParkingSpotsData() {
+        List<ParkingSpot> parkingSpots = new ArrayList<>();
+        parkingSlots.stream()
+                    .map(ParkingSlot::getParkingSpotData)
+                    .forEach(parkingSpots1 -> parkingSpots.addAll(parkingSpots1));
+        return parkingSpots;
     }
 
 }

@@ -13,8 +13,8 @@ public class NormalDriver {
                                               .min(Comparator.comparing(ParkingSlot::getOccupiedSize))
                                               .get();
         int slotNumber = parkingSlots.indexOf(parkingSlot);
-        int spotNumber = parkingSlot.getUnoccupiedSpots().get(0);
-        ParkingSpot parkingSpot = new ParkingSpot(slotNumber,spotNumber,vehicle,System.currentTimeMillis(), ParkingLot.DriverType.NORMAL);
+        ParkingSpot parkingSpot = new ParkingSpot(slotNumber,parkingSlot.getUnoccupiedSpots().get(0),vehicle,
+                                                  System.currentTimeMillis(), ParkingLot.DriverType.NORMAL);
         parkingSlots.get(slotNumber).parkVehicle(parkingSpot);
         return parkingSpot;
     }

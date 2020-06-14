@@ -10,6 +10,5 @@ public interface IParkingLot {
     public boolean unparkVehicle(Vehicle vehicle);
     public ParkingSpot getParkingSpot(Vehicle vehicle);
     public ParkingLot.ParkingLotStatus getParkingLotStatus();
-    public boolean isFull();
 
 }

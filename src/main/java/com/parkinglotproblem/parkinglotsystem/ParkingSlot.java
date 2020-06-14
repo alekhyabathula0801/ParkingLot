@@ -24,7 +24,11 @@ public class ParkingSlot {
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
         if(parkingSlotData.containsKey(parkingSpot.spotNumber))
             throw new ParkingLotException("Slot occupied", ParkingLotException.ExceptionType.SLOT_OCCUPIED);
-        parkingSlotData.put(parkingSpot.spotNumber,parkingSpot);
+        int spotNumber = parkingSpot.spotNumber;
+        for(int index=0; index<parkingSpot.vehicle.vehicleSize.size; index++) {
+            parkingSlotData.put(spotNumber, parkingSpot);
+            spotNumber++;
+        }
         return true;
     }
 
@@ -69,8 +73,17 @@ public class ParkingSlot {
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
         if(!isVehicleParked(vehicle))
             throw new ParkingLotException("Vehicle not present", ParkingLotException.ExceptionType.NO_VEHICLE);
-        parkingSlotData.remove(getSpotNumber(vehicle));
+        for(int index=0; index<vehicle.vehicleSize.size; index++)
+            parkingSlotData.remove(getSpotNumber(vehicle));
         return true;
+    }
+
+    public ParkingSpot getParkingSpot(Vehicle vehicle) {
+        return parkingSlotData.get(getSpotNumber(vehicle));
+    }
+
+    public List<ParkingSpot> getParkingSpotData() {
+        return new ArrayList<>(parkingSlotData.values());
     }
 
     public boolean isFull() {
