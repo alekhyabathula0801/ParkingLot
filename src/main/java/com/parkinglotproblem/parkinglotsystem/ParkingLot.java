@@ -15,6 +15,8 @@ public class ParkingLot implements IParkingLot{
     enum DriverType {NORMAL,HANDICAPED}
     public enum ParkingLotStatus {OPEN,CLOSED}
     int parkingLotSize;
+    enum FetchBy{WHITE,BLUE_TOYATO}
+
     List<ParkingSlot> parkingSlots = new ArrayList<>();
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
         this.parkingSlots.add(parkingSlot);
@@ -85,9 +87,9 @@ public class ParkingLot implements IParkingLot{
         return parkingSpots;
     }
 
-    public List<ParkingSpot> getVehiclesData() {
+    public List<ParkingSpot> getVehiclesData(FetchBy fetchBy) {
         return getParkingSpotsData().stream()
-                                    .filter(parkingSpot -> parkingSpot.vehicle.vehicleColor == Vehicle.VehicleColor.WHITE)
+                                    .filter(new ParkingSpotPredicators().getPredicate(fetchBy))
                                     .collect(Collectors.toList());
     }
 

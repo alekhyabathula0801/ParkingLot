@@ -12,6 +12,6 @@ public interface IParkingLot {
     public boolean unparkVehicle(Vehicle vehicle);
     public ParkingSpot getParkingSpot(Vehicle vehicle);
     public ParkingLot.ParkingLotStatus getParkingLotStatus();
-    public List<ParkingSpot> getVehiclesData();
+    public List<ParkingSpot> getVehiclesData(ParkingLot.FetchBy fetchBy);
 
 }
