@@ -12,6 +12,7 @@ public class ParkingSlot {
 
     public int capacity;
     public Map<Integer,ParkingSpot> parkingSlotData = new HashMap<>();
+    public List<ParkingSpot> parkingSpotsHistory = new ArrayList<>();
 
     public ParkingSlot(int capacity) {
         this.capacity = capacity;
@@ -24,6 +25,7 @@ public class ParkingSlot {
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
         if(parkingSlotData.containsKey(parkingSpot.spotNumber))
             throw new ParkingLotException("Slot occupied", ParkingLotException.ExceptionType.SLOT_OCCUPIED);
+        parkingSpotsHistory.add(parkingSpot);
         int spotNumber = parkingSpot.spotNumber;
         for(int index=0; index<parkingSpot.vehicle.vehicleSize.size; index++) {
             parkingSlotData.put(spotNumber, parkingSpot);
@@ -73,6 +75,7 @@ public class ParkingSlot {
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
         if(!isVehicleParked(vehicle))
             throw new ParkingLotException("Vehicle not present", ParkingLotException.ExceptionType.NO_VEHICLE);
+        parkingSlotData.get(getSpotNumber(vehicle)).setOutTime(System.currentTimeMillis());
         for(int index=0; index<vehicle.vehicleSize.size; index++)
             parkingSlotData.remove(getSpotNumber(vehicle));
         return true;

@@ -246,4 +246,15 @@ public class ParkingLotTest {
         assertEquals(expectedList,handicapedDriverVehicles);
     }
 
+    @Test
+    public void givenVehiclesToParkAndUnparked_shouldReturnAllVehiclesData() {
+        parkingLot.unparkVehicle(new Vehicle("AP10K0987",SMALL,WHITE,"TOYOTA"));
+        List<ParkingSpot> vehiclesParkedInLot = parkingLot.getAllVehiclesDataParkedInLot();
+        List<ParkingSpot> expectedList = new ArrayList<>();
+        expectedList.add(new ParkingSpot(0,1,new Vehicle("AP10K0987",SMALL,WHITE,"TOYOTA")));
+        expectedList.add(new ParkingSpot(0,2,new Vehicle("AS90H1234",SMALL,BLUE,"TOYOTA")));
+        expectedList.add(new ParkingSpot(1,1,new Vehicle("KN90H1234",SMALL,RED,"BMW")));
+        assertEquals(expectedList,vehiclesParkedInLot);
+    }
+
 }

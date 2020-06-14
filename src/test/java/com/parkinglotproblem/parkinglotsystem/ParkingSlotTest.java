@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.parkinglotproblem.exception.ParkingLotException.ExceptionType.*;
+import static com.parkinglotproblem.vehicle.Vehicle.VehicleColor.BLACK;
 import static com.parkinglotproblem.vehicle.Vehicle.VehicleColor.WHITE;
 import static com.parkinglotproblem.vehicle.Vehicle.VehicleSize.SMALL;
 import static org.junit.Assert.assertEquals;
@@ -157,7 +158,7 @@ public class ParkingSlotTest {
     @Test
     public void givenCarNumberToUnpark_whenNotPresent_shouldThrowExecption() {
         try {
-            parkingSlot.unparkVehicle(new Vehicle("TS09CD1234",SMALL,WHITE,"TOYOTA"));
+            parkingSlot.unparkVehicle(new Vehicle("TS09CD1234",SMALL,BLACK,"TOYOTA"));
         } catch (ParkingLotException e) {
             assertEquals(NO_VEHICLE,e.type);
         }

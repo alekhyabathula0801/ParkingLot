@@ -81,9 +81,7 @@ public class ParkingLot implements IParkingLot{
 
     public List<ParkingSpot> getParkingSpotsData() {
         List<ParkingSpot> parkingSpots = new ArrayList<>();
-        parkingSlots.stream()
-                    .map(ParkingSlot::getParkingSpotData)
-                    .forEach(parkingSpots1 -> parkingSpots.addAll(parkingSpots1));
+        parkingSlots.forEach(parkingSlot -> parkingSpots.addAll(parkingSlot.parkingSlotData.values()));
         return parkingSpots;
     }
 
@@ -91,6 +89,12 @@ public class ParkingLot implements IParkingLot{
         return getParkingSpotsData().stream()
                                     .filter(new ParkingSpotPredicators().getPredicate(fetchBy))
                                     .collect(Collectors.toList());
+    }
+
+    public List<ParkingSpot> getAllVehiclesDataParkedInLot() {
+        List<ParkingSpot> vehiclesData = new ArrayList<>();
+        parkingSlots.forEach(parkingSlot -> vehiclesData.addAll(parkingSlot.parkingSpotsHistory));
+        return vehiclesData;
     }
 
 }

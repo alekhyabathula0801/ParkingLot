@@ -10,6 +10,7 @@ public class ParkingSpot {
     public int spotNumber;
     public Vehicle vehicle;
     public long inTime;
+    public long outTime;
     public ParkingLot.DriverType driverType;
 
     public ParkingSpot(int slotNumber, int spotNumber, Vehicle vehicle, long inTime, ParkingLot.DriverType driverType) {
@@ -44,4 +45,7 @@ public class ParkingSpot {
         this.spotNumber = spotNumber;
     }
 
+    public void setOutTime(long outTime) {
+        this.outTime = outTime;
+    }
 }
