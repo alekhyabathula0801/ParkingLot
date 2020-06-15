@@ -13,7 +13,8 @@ public class HandicapDriver {
         for(ParkingSlot parkingSlot: parkingSlots) {
             for(int position=1; position<=parkingSlot.capacity; position++) {
                 if(parkingSlot.parkingSlotData.containsKey(position)) {
-                    if(parkingSlot.parkingSlotData.get(position).driverType.equals(ParkingLot.DriverType.NORMAL)) {
+                    if(parkingSlot.parkingSlotData.get(position).driverType.equals(ParkingLot.DriverType.NORMAL)
+                       && parkingSlot.parkingSlotData.get(position).vehicle.vehicleSize.equals(Vehicle.VehicleSize.SMALL)) {
                         relocateNormalDriverVehicle(parkingSlots,position,parkingSlot);
                         return parkHandicapDriverVehicle(parkingSlots.indexOf(parkingSlot),position,parkingSlot,vehicle);
                     }

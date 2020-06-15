@@ -81,10 +81,6 @@ public class ParkingSlot {
         return true;
     }
 
-    public boolean checkVehicleCanParkInSlot(Vehicle vehicle) {
-        return capacity - getOccupiedSize() >= vehicle.vehicleSize.size;
-    }
-
     public ParkingSpot getParkingSpot(Vehicle vehicle) {
         return parkingSlotData.get(getSpotNumber(vehicle));
     }

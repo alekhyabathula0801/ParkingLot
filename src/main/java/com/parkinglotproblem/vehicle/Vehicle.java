@@ -3,6 +3,7 @@ package com.parkinglotproblem.vehicle;
 import com.parkinglotproblem.exception.ParkingLotException;
 
 import java.util.Objects;
+import  java.awt.Color;
 
 public class Vehicle {
 
@@ -14,17 +15,17 @@ public class Vehicle {
         }
     }
 
-    public enum VehicleColor{WHITE,BLACK,RED,BLUE}
+    public enum VehicleBrand{BMW,TOYOTA}
 
     public String vehicleNumber;
     public VehicleSize vehicleSize;
-    public VehicleColor vehicleColor;
-    public String brand;
+    public VehicleBrand brand;
+    public Color vehicleColor;
 
-    public Vehicle(String vehicleNumber,VehicleSize vehicleSize,VehicleColor vehicleColor,String brand) {
-        if(vehicleNumber == null | brand == null)
+    public Vehicle(String vehicleNumber,VehicleSize vehicleSize,Color vehicleColor,VehicleBrand brand) {
+        if(vehicleNumber == null)
             throw new ParkingLotException("Entered Null", ParkingLotException.ExceptionType.ENTERED_NULL);
-        if(vehicleNumber.length() == 0 | brand.length() == 0)
+        if(vehicleNumber.length() == 0)
             throw new ParkingLotException("Entered Empty", ParkingLotException.ExceptionType.ENTERED_EMPTY);
         this.vehicleNumber = vehicleNumber;
         this.vehicleSize = vehicleSize;
