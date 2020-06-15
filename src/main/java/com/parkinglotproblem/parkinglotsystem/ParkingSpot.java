@@ -31,6 +31,14 @@ public class ParkingSpot {
         this.vehicle = vehicle;
     }
 
+    public void setSlotNumber(int slotNumber) {
+        this.slotNumber = slotNumber;
+    }
+
+    public void setSpotNumber(int spotNumber) {
+        this.spotNumber = spotNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
