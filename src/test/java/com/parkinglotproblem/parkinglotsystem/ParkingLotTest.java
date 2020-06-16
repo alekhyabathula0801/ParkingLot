@@ -221,6 +221,33 @@ public class ParkingLotTest {
     }
 
     @Test
+    public void givenVehiclesToParkAndUnpark_whenLargeVehicleParkedAccordingToManoeuvre_shouldReturnResults() {
+        IParkingLot parkingLot = new ParkingLot(new ParkingSlot(3),new ParkingSlot(3),new ParkingSlot(3),
+                                                new ParkingSlot(3));
+        parkingLot.parkVehicle(new Vehicle("AP10K0987",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("KN90H1234",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("JN90H1234",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("SP10K0987",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("LN90H1234",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("AN90H1234",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("OP10K0987",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("PN90H1234",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("WN90H1234",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("DP10K0987",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("EN90H1234",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.parkVehicle(new Vehicle("FN90H1234",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        parkingLot.unparkVehicle(new Vehicle("SP10K0987",SMALL,WHITE,TOYOTA));
+        parkingLot.unparkVehicle(new Vehicle("JN90H1234",SMALL,WHITE,TOYOTA));
+        parkingLot.unparkVehicle(new Vehicle("AN90H1234",SMALL,WHITE,TOYOTA));
+        parkingLot.unparkVehicle(new Vehicle("OP10K0987",SMALL,WHITE,TOYOTA));
+        parkingLot.unparkVehicle(new Vehicle("DP10K0987",SMALL,WHITE,TOYOTA));
+        parkingLot.parkVehicle(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);
+        ParkingSpot vehicle13Details = parkingLot.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA));
+        ParkingSpot expectedVehicle13Details = new ParkingSpot(2,1,new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA));
+        assertEquals(expectedVehicle13Details,vehicle13Details);
+    }
+
+    @Test
     public void givenLargeVehicleToPark_whenSpaceNotAvailable_shouldThrowException() {
         try {
             parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.NORMAL);

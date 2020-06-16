@@ -14,17 +14,35 @@ public class LargeVehicle {
                                                            .sorted(Comparator.comparing(ParkingSlot::getOccupiedSize))
                                                            .collect(Collectors.toList());
         ParkingSlot parkingSlot1 = sortedParkingSlots.get(0);
+
+        for(int slot=0;slot<sortedParkingSlots.size();slot++) {
+            int index =  parkingSlots.indexOf(sortedParkingSlots.get(slot));
+            if(index == 0 | index == parkingSlots.size()-1) {
+                parkingSlot1 = sortedParkingSlots.get(slot);
+                break;
+            } else if(parkingSlots.get(index).parkingSlotData.get(1) == null&&parkingSlots.get(index-1).parkingSlotData.get(1) == null ) {
+                parkingSlot1 = sortedParkingSlots.get(slot);
+                break;
+            } else if(parkingSlots.get(index).parkingSlotData.get(1) == null&&parkingSlots.get(index+1).parkingSlotData.get(1) == null) {
+                parkingSlot1 = sortedParkingSlots.get(slot);
+                break;
+            }
+        }
+
         if(parkingSlot1.getUnoccupiedSpots().size() >= vehicle.vehicleSize.size) {
             if(parkingSlot1.getUnoccupiedSpots().get(0) + 1 != parkingSlot1.getUnoccupiedSpots().get(1))
                 relocateVehicle(parkingSlot1, parkingSlot1, parkingSlots.indexOf(parkingSlot1),
                                 parkingSlot1.getUnoccupiedSpots().get(0),parkingSlot1.getUnoccupiedSpots().get(1)-1);
         } else {
-            if (parkingSlot1.parkingSlotData.get(parkingSlot1.getUnoccupiedSpots().get(0) + 1) != null)
-                relocateVehicle(parkingSlot1,sortedParkingSlots.get(1),parkingSlots.indexOf(sortedParkingSlots.get(1)),
-                                sortedParkingSlots.get(1).getUnoccupiedSpots().get(0),parkingSlot1.getUnoccupiedSpots().get(0)+1);
-            else
-                relocateVehicle(parkingSlot1,sortedParkingSlots.get(1),parkingSlots.indexOf(sortedParkingSlots.get(1)),
-                                sortedParkingSlots.get(1).getUnoccupiedSpots().get(0),parkingSlot1.getUnoccupiedSpots().get(0)-1);
+            if (parkingSlot1.parkingSlotData.get(parkingSlot1.getUnoccupiedSpots().get(0) + 1) != null) {
+                sortedParkingSlots.remove(parkingSlot1);
+                relocateVehicle(parkingSlot1,sortedParkingSlots.get(0),parkingSlots.indexOf(sortedParkingSlots.get(0)),
+                                sortedParkingSlots.get(0).getUnoccupiedSpots().get(0),parkingSlot1.getUnoccupiedSpots().get(0)+1);
+            } else {
+                sortedParkingSlots.remove(parkingSlot1);
+                relocateVehicle(parkingSlot1,sortedParkingSlots.get(0),parkingSlots.indexOf(sortedParkingSlots.get(0)),
+                                sortedParkingSlots.get(0).getUnoccupiedSpots().get(0),parkingSlot1.getUnoccupiedSpots().get(0)-1);
+            }
         }
         return parkLargeVehicle(parkingSlots.indexOf(parkingSlot1),parkingSlot1.getUnoccupiedSpots().get(0),vehicle,parkingSlots);
     }
