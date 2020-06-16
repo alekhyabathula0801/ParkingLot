@@ -5,9 +5,11 @@ import com.parkinglotproblem.exception.ParkingLotException;
 import com.parkinglotproblem.parkinglotowner.ParkingLotOwner;
 import com.parkinglotproblem.vehicle.Vehicle;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ParkingLot implements IParkingLot{
@@ -15,7 +17,6 @@ public class ParkingLot implements IParkingLot{
     enum DriverType {NORMAL,HANDICAPED}
     public enum ParkingLotStatus {OPEN,CLOSED}
     int parkingLotSize;
-    enum FetchBy{WHITE,BLUE_TOYATO,BMW, HANDICAP_DRIVER_IN_SLOT1,THIRTY_MINUTES}
 
     List<ParkingSlot> parkingSlots = new ArrayList<>();
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
@@ -85,9 +86,36 @@ public class ParkingLot implements IParkingLot{
         return parkingSpots;
     }
 
-    public List<ParkingSpot> getVehiclesData(FetchBy fetchBy) {
+    public List<ParkingSpot> getVehiclesDataByColor(Color color) {
         return getParkingSpotsData().stream()
-                                    .filter(new ParkingSpotPredicators().getPredicate(fetchBy))
+                                    .filter(parkingSpot -> parkingSpot.vehicle.vehicleColor == color)
+                                    .collect(Collectors.toList());
+    }
+
+    public List<ParkingSpot> getVehiclesDataByBrand(Vehicle.VehicleBrand vehicleBrand) {
+        return getParkingSpotsData().stream()
+                                    .filter(parkingSpot -> parkingSpot.vehicle.brand == vehicleBrand)
+                                    .collect(Collectors.toList());
+    }
+
+    public List<ParkingSpot> getVehiclesDataByColorAndBrand(Color color, Vehicle.VehicleBrand vehicleBrand) {
+        return getVehiclesDataByColor(color).stream()
+                                            .filter(parkingSpot -> parkingSpot.vehicle.brand == vehicleBrand)
+                                            .map(ParkingSpot::getDTO)
+                                            .collect(Collectors.toList());
+    }
+
+    public List<ParkingSpot> getVehiclesDataInLastGivenMinutes(int time) {
+        return getParkingSpotsData().stream()
+                                    .filter(parkingSpot -> System.currentTimeMillis() - parkingSpot.inTime < time*60000)
+                                    .collect(Collectors.toList());
+    }
+
+    public List<ParkingSpot> getVehiclesDataOfDriversInGivenSlots(DriverType driverType,int slot1, int slot2) {
+        Predicate<ParkingSpot> driverInSlot1 = parkingSpot -> parkingSpot.driverType.equals(driverType)&& parkingSpot.slotNumber == slot1;
+        Predicate<ParkingSpot> driverInSlot2 = parkingSpot -> parkingSpot.driverType.equals(driverType)&& parkingSpot.slotNumber == slot2;
+        return getParkingSpotsData().stream()
+                                    .filter(driverInSlot1.or(driverInSlot2))
                                     .collect(Collectors.toList());
     }
 

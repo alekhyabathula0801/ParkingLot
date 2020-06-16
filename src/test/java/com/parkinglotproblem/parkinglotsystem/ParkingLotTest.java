@@ -241,7 +241,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenVehiclesToPark_whenParked_shouldReturnWhiteColorVehiclesParkingSpot() {
-        List<ParkingSpot> whiteColorVehicles = parkingLot.getVehiclesData(ParkingLot.FetchBy.WHITE);
+        List<ParkingSpot> whiteColorVehicles = parkingLot.getVehiclesDataByColor(WHITE);
         List<ParkingSpot> expectedList = new ArrayList<>();
         expectedList.add(new ParkingSpot(0,1,new Vehicle("AP10K0987",SMALL,WHITE,TOYOTA)));
         assertEquals(expectedList,whiteColorVehicles);
@@ -249,15 +249,15 @@ public class ParkingLotTest {
 
     @Test
     public void givenVehiclesToPark_whenFetchForBlueToyota_shouldReturnResults() {
-        List<ParkingSpot> buleToyotaVehicles = parkingLot.getVehiclesData(ParkingLot.FetchBy.BLUE_TOYATO);
+        List<ParkingSpot> buleToyotaVehicles = parkingLot.getVehiclesDataByColorAndBrand(BLUE,TOYOTA);
         List<ParkingSpot> expectedList = new ArrayList<>();
-        expectedList.add(new ParkingSpot(0,2,new Vehicle("AS90H1234",SMALL,BLUE,TOYOTA)));
+        expectedList.add(new ParkingSpot(0,2,"AS90H1234"));
         assertEquals(expectedList,buleToyotaVehicles);
     }
 
     @Test
     public void givenVehiclesToPark_whenFetchForBMW_shouldReturnResults() {
-        List<ParkingSpot> buleToyotaVehicles = parkingLot.getVehiclesData(ParkingLot.FetchBy.BMW);
+        List<ParkingSpot> buleToyotaVehicles = parkingLot.getVehiclesDataByBrand(BMW);
         List<ParkingSpot> expectedList = new ArrayList<>();
         expectedList.add(new ParkingSpot(1,1,new Vehicle("KN90H1234",SMALL,RED,BMW)));
         assertEquals(expectedList,buleToyotaVehicles);
@@ -265,7 +265,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenVehiclesToPark_whenFetchVehiclesParkedInLast30Minutes_shouldReturnResults() {
-        List<ParkingSpot> vehiclesParkedInLast30Minutes = parkingLot.getVehiclesData(ParkingLot.FetchBy.THIRTY_MINUTES);
+        List<ParkingSpot> vehiclesParkedInLast30Minutes = parkingLot.getVehiclesDataInLastGivenMinutes(30);
         List<ParkingSpot> expectedList = new ArrayList<>();
         expectedList.add(new ParkingSpot(0,1,new Vehicle("AP10K0987",SMALL,WHITE,TOYOTA)));
         expectedList.add(new ParkingSpot(0,2,new Vehicle("AS90H1234",SMALL,BLUE,TOYOTA)));
@@ -274,13 +274,16 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenVehiclesToPark_whenFetchForHandicapedDriversInSlot2_shouldReturnResults() {
-        IParkingLot parkingLot = new ParkingLot(new ParkingSlot(1),new ParkingSlot(1));
+    public void givenVehiclesToPark_whenFetchForHandicapedDriversInSlot1And3_shouldReturnResults() {
+        IParkingLot parkingLot = new ParkingLot(new ParkingSlot(1),new ParkingSlot(1),new ParkingSlot(1),new ParkingSlot(1));
         parkingLot.parkVehicle(new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.HANDICAPED);
         parkingLot.parkVehicle(new Vehicle("SK09A5679",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.HANDICAPED);
-        List<ParkingSpot> handicapedDriverVehicles = parkingLot.getVehiclesData(ParkingLot.FetchBy.HANDICAP_DRIVER_IN_SLOT1);
+        parkingLot.parkVehicle(new Vehicle("SK09A5672",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.HANDICAPED);
+        parkingLot.parkVehicle(new Vehicle("SK09A5671",SMALL,WHITE,TOYOTA), ParkingLot.DriverType.HANDICAPED);
+        List<ParkingSpot> handicapedDriverVehicles = parkingLot.getVehiclesDataOfDriversInGivenSlots(ParkingLot.DriverType.HANDICAPED,1,3);
         List<ParkingSpot> expectedList = new ArrayList<>();
         expectedList.add(new ParkingSpot(1,1,new Vehicle("SK09A5679",SMALL,WHITE,TOYOTA)));
+        expectedList.add(new ParkingSpot(3,1,new Vehicle("SK09A5671",SMALL,WHITE,TOYOTA)));
         assertEquals(expectedList,handicapedDriverVehicles);
     }
 

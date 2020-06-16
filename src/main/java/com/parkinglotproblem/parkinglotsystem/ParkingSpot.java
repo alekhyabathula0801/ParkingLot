@@ -12,6 +12,7 @@ public class ParkingSpot {
     public long inTime;
     public long outTime;
     public ParkingLot.DriverType driverType;
+    String vehicleNumber;
 
     public ParkingSpot(int slotNumber, int spotNumber, Vehicle vehicle, long inTime, ParkingLot.DriverType driverType) {
         this.slotNumber = slotNumber;
@@ -19,6 +20,12 @@ public class ParkingSpot {
         this.vehicle = vehicle;
         this.inTime = inTime;
         this.driverType = driverType;
+    }
+
+    public ParkingSpot(int slotNumber, int spotNumber, String vehicleNumber) {
+        this.slotNumber = slotNumber;
+        this.spotNumber = spotNumber;
+        this.vehicleNumber = vehicleNumber;
     }
 
     public void setOutTime(long outTime) {
@@ -47,6 +54,10 @@ public class ParkingSpot {
         return slotNumber == that.slotNumber &&
                 spotNumber == that.spotNumber &&
                 Objects.equals(vehicle, that.vehicle);
+    }
+
+    public ParkingSpot getDTO() {
+        return new ParkingSpot(slotNumber,spotNumber,vehicle.vehicleNumber);
     }
 
 }
