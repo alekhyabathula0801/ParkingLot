@@ -32,7 +32,7 @@ public class ParkingLotTest {
     ParkingLotOwner parkingLotOwner;
 
     @Mock
-    ParkingFactory parkingFactory;
+    ParkingLotStrategy parkingLotStrategy;
 
     @Mock
     AirportSecurity airportSecurity;
@@ -49,11 +49,11 @@ public class ParkingLotTest {
         slots.add(parkingSlot2);
         when(parkingLotOwner.getParkingLotStatus(true)).thenReturn(true);
         when(airportSecurity.getParkingLotStatus(true)).thenReturn(true);
-        when(parkingFactory.getParkingSpot(new Vehicle("AP10K0987",SMALL, WHITE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0987",SMALL, WHITE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(0,1,new Vehicle("AP10K0987",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),NORMAL));
-        when(parkingFactory.getParkingSpot(new Vehicle("KN90H1234",SMALL,RED,BMW),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("KN90H1234",SMALL,RED,BMW),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,1,new Vehicle("KN90H1234",SMALL,RED,BMW),System.currentTimeMillis(),NORMAL));
-        when(parkingFactory.getParkingSpot(new Vehicle("AS90H1234",SMALL,BLUE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("AS90H1234",SMALL,BLUE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(0,2,new Vehicle("AS90H1234",SMALL,BLUE,TOYOTA),System.currentTimeMillis(),NORMAL));
         parkingLot.parkVehicle(new Vehicle("AP10K0987",SMALL, WHITE,TOYOTA), NORMAL);
         parkingLot.parkVehicle(new Vehicle("KN90H1234",SMALL,RED,BMW), NORMAL);
@@ -75,9 +75,9 @@ public class ParkingLotTest {
 
     @Test
     public void given2Lots_when5VehiclesAdded_shouldReturnResults() {
-        when(parkingFactory.getParkingSpot(new Vehicle("AS90H1233",SMALL,WHITE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("AS90H1233",SMALL,WHITE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,2,new Vehicle("AS90H1233",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),NORMAL));
-        when(parkingFactory.getParkingSpot(new Vehicle("AS90H1230",SMALL,WHITE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("AS90H1230",SMALL,WHITE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,3,new Vehicle("AS90H1230",SMALL,BLUE,TOYOTA),System.currentTimeMillis(),NORMAL));
         parkingLot.parkVehicle(new Vehicle("AS90H1233",SMALL,WHITE,TOYOTA), NORMAL);
         parkingLot.parkVehicle(new Vehicle("AS90H1230",SMALL,WHITE,TOYOTA), NORMAL);
@@ -89,9 +89,9 @@ public class ParkingLotTest {
     @Test
     public void given2LotsWithDifferentSize_whenFull_shouldThrowException() {
         try {
-            when(parkingFactory.getParkingSpot(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA),slots,NORMAL))
+            when(parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA),slots,NORMAL))
                     .thenReturn(new ParkingSpot(1,2,new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA)));
-            when(parkingFactory.getParkingSpot(new Vehicle("KN90H1233",SMALL,WHITE,TOYOTA),slots,NORMAL))
+            when(parkingLotStrategy.getParkingSpot(new Vehicle("KN90H1233",SMALL,WHITE,TOYOTA),slots,NORMAL))
                     .thenReturn(new ParkingSpot(1,3,new Vehicle("KN90H1233",SMALL,BLUE,TOYOTA)));
             parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA), NORMAL);
             parkingLot.parkVehicle(new Vehicle("KN90H1233",SMALL,WHITE,TOYOTA), NORMAL);
@@ -109,7 +109,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLotWith2Slots_whenVehicleParked_shouldReturnResults() {
-        when(parkingFactory.getParkingSpot(new Vehicle("AS90H1239",SMALL,WHITE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("AS90H1239",SMALL,WHITE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,2,new Vehicle("AS90H1239",SMALL,WHITE,TOYOTA)));
         boolean status = parkingLot.parkVehicle(new Vehicle("AS90H1239",SMALL,WHITE,TOYOTA), NORMAL);
         assertTrue(status);
@@ -123,9 +123,9 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_whenFull_shouldReturnClosed() {
-        when(parkingFactory.getParkingSpot(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,2,new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA)));
-        when(parkingFactory.getParkingSpot(new Vehicle("KN90H1233",SMALL,WHITE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("KN90H1233",SMALL,WHITE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,3,new Vehicle("KN90H1233",SMALL,BLUE,TOYOTA)));
         parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA), NORMAL);
         parkingLot.parkVehicle(new Vehicle("KN90H1233",SMALL,WHITE,TOYOTA), NORMAL);
@@ -135,7 +135,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenParkingLot_whenNotFull_shouldReturnOpen() {
-        when(parkingFactory.getParkingSpot(new Vehicle("AP10K0981",SMALL,RED,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0981",SMALL,RED,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,2,new Vehicle("AP10K0981",SMALL,RED,TOYOTA)));
         parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,RED,TOYOTA), NORMAL);
         ParkingLot.ParkingLotStatus status = parkingLot.getParkingLotStatus();
@@ -154,7 +154,7 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotWith2Slots_whenVehicleUnparkedAndOtherVehicleParked_shouldReturnResults() {
         parkingLot.unparkVehicle(new Vehicle("KN90H1234",SMALL,WHITE,BMW));
-        when(parkingFactory.getParkingSpot(new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,1,new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),NORMAL));
         parkingLot.parkVehicle(new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA), NORMAL);
         ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA));
@@ -165,7 +165,7 @@ public class ParkingLotTest {
     @Test
     public void givenParkingLotWith2Slots_whenHandicapedDriverVehicleParked_shouldReturnResults() {
         parkingLot.unparkVehicle(new Vehicle("AP10K0987",SMALL, WHITE,TOYOTA));
-        when(parkingFactory.getParkingSpot(new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA),slots,HANDICAPED))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA),slots,HANDICAPED))
             .thenReturn(new ParkingSpot(0,1,new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),NORMAL));
         parkingLot.parkVehicle(new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA), HANDICAPED);
         ParkingSpot vehicle4Details = parkingLot.getParkingSpot(new Vehicle("WA0K1230",SMALL,WHITE,TOYOTA));
@@ -186,7 +186,7 @@ public class ParkingLotTest {
     @Test
     public void givenLargeVehicleToPark_whenSpaceNotAvailable_shouldThrowException() {
         try {
-            when(parkingFactory.getParkingSpot(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA),slots,NORMAL))
+            when(parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA),slots,NORMAL))
                 .thenReturn(new ParkingSpot(1,2,new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA)));
             parkingLot.parkVehicle(new Vehicle("AP10K0981",SMALL,WHITE,TOYOTA), NORMAL);
             parkingLot.parkVehicle(new Vehicle("KN90H1233",LARGE,WHITE,TOYOTA), NORMAL);
@@ -197,7 +197,7 @@ public class ParkingLotTest {
 
     @Test
     public void givenSmallAndLargeVehicles_whenLargeVehicleUnparked_shouldReturnResults() {
-        when(parkingFactory.getParkingSpot(new Vehicle("KN90H1233",LARGE,WHITE,TOYOTA),slots,NORMAL))
+        when(parkingLotStrategy.getParkingSpot(new Vehicle("KN90H1233",LARGE,WHITE,TOYOTA),slots,NORMAL))
             .thenReturn(new ParkingSpot(1,2,new Vehicle("KN90H1233",LARGE,WHITE,TOYOTA)));
         parkingLot.parkVehicle(new Vehicle("KN90H1233",LARGE,WHITE,TOYOTA), NORMAL);
         int size = parkingLot.getParkingLotOccupiedSize();

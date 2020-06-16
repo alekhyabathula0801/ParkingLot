@@ -7,7 +7,7 @@ import java.util.List;
 
 import static com.parkinglotproblem.parkinglotsystem.ParkingLot.DriverType.HANDICAPED;
 
-public class HandicapDriver {
+public class HandicapDriverStrategy {
 
     public ParkingSpot getParkingSpot(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
         for(ParkingSlot parkingSlot: parkingSlots) {
@@ -26,7 +26,7 @@ public class HandicapDriver {
     }
 
     public void relocateNormalDriverVehicle(List<ParkingSlot> parkingSlots, int position, ParkingSlot parkingSlot) {
-        ParkingSpot parkingSpot =new NormalDriver().getParkingSpot(parkingSlot.parkingSlotData.get(position).vehicle,parkingSlots);
+        ParkingSpot parkingSpot =new NormalDriverStrategy().getParkingSpot(parkingSlot.parkingSlotData.get(position).vehicle,parkingSlots);
         parkingSlots.get(parkingSpot.slotNumber).parkVehicle(parkingSpot);
         parkingSlot.unparkVehicle(parkingSlot.parkingSlotData.get(position).vehicle);
     }

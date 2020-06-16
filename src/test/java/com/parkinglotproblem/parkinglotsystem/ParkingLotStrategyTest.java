@@ -13,13 +13,13 @@ import static com.parkinglotproblem.vehicle.Vehicle.VehicleSize.*;
 import static java.awt.Color.*;
 import static org.junit.Assert.assertEquals;
 
-public class ParkingFactoryTest {
+public class ParkingLotStrategyTest {
 
-    ParkingFactory parkingFactory;
+    ParkingLotStrategy parkingLotStrategy;
     List<ParkingSlot> parkingSlots;
     @Before
     public void setUp() throws Exception {
-        parkingFactory = new ParkingFactory();
+        parkingLotStrategy = new ParkingLotStrategy();
         parkingSlots = new ArrayList<>();
     }
 
@@ -29,7 +29,7 @@ public class ParkingFactoryTest {
         parkingSlots.add(new ParkingSlot(3));
         parkingSlots.get(0).parkVehicle(new ParkingSpot(0,1,new Vehicle("AP10K0987",
                 SMALL,WHITE,TOYOTA),System.currentTimeMillis(),NORMAL));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("AS09H1234",SMALL,BLACK,BMW),parkingSlots,
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("AS09H1234",SMALL,BLACK,BMW),parkingSlots,
                                                                 NORMAL);
         assertEquals(new ParkingSpot(1,1,new Vehicle("AS09H1234",SMALL,BLACK,BMW)),parkingSpot);
     }
@@ -40,7 +40,7 @@ public class ParkingFactoryTest {
         parkingSlots.add(new ParkingSlot(3));
         parkingSlots.get(0).parkVehicle(new ParkingSpot(0,1,new Vehicle("AP10K0987",
                                         SMALL,WHITE,TOYOTA),System.currentTimeMillis(),NORMAL));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("AS09H1234", SMALL,BLACK, BMW),parkingSlots,
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("AS09H1234", SMALL,BLACK, BMW),parkingSlots,
                                                                 HANDICAPED);
         assertEquals(new ParkingSpot(0,1,new Vehicle("AS09H1234", SMALL,BLACK, BMW)),parkingSpot);
         assertEquals(new ParkingSpot(1,1,new Vehicle("AP10K0987",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),NORMAL),
@@ -53,7 +53,7 @@ public class ParkingFactoryTest {
         parkingSlots.add(new ParkingSlot(3));
         parkingSlots.get(0).parkVehicle(new ParkingSpot(0,1,new Vehicle("AP10K0987",SMALL,WHITE,TOYOTA),
                                         System.currentTimeMillis(),NORMAL));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA),parkingSlots,
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA),parkingSlots,
                                                                 HANDICAPED);
         assertEquals(new ParkingSpot(0,1,new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA)),parkingSpot);
     }
@@ -62,7 +62,7 @@ public class ParkingFactoryTest {
     public void givenVehicleToPark_whenHandicapDriver_shouldReturnResults() {
         parkingSlots.add(new ParkingSlot(2));
         parkingSlots.add(new ParkingSlot(3));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA),parkingSlots,
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA),parkingSlots,
                                                                 HANDICAPED);
         assertEquals(new ParkingSpot(0,1,new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA)),parkingSpot);
     }
@@ -75,7 +75,7 @@ public class ParkingFactoryTest {
                                         HANDICAPED));
         parkingSlots.get(1).parkVehicle(new ParkingSpot(0,1,new Vehicle("AP10K0999",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),
                                                         NORMAL));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA),parkingSlots,
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA),parkingSlots,
                                                                 HANDICAPED);
 
         assertEquals(new ParkingSpot(0,2,new Vehicle("SK09A5678",SMALL,WHITE,TOYOTA)),parkingSpot);
@@ -88,7 +88,7 @@ public class ParkingFactoryTest {
                                                 System.currentTimeMillis(), NORMAL));
         parkingSlots.get(0).parkingSlotData.put(3,new ParkingSpot(0,3,new Vehicle("AS90H1234",SMALL,WHITE,TOYOTA),
                                                 System.currentTimeMillis(), NORMAL));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots
                                                                 ,NORMAL);
         assertEquals(new ParkingSpot(0,3,new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA)),parkingSpot);
         assertEquals(new ParkingSpot(0,2,new Vehicle("AS90H1234",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),
@@ -102,7 +102,7 @@ public class ParkingFactoryTest {
                                                                   System.currentTimeMillis(),NORMAL));
         parkingSlots.get(0).parkingSlotData.put(3,new ParkingSpot(0,3,new Vehicle("AS90H1234",SMALL,WHITE,TOYOTA),
                                                 System.currentTimeMillis(),NORMAL));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots,
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots,
                                                                 NORMAL);
         assertEquals(new ParkingSpot(0,3,new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA)),parkingSpot);
         assertEquals(new ParkingSpot(0,1,new Vehicle("AS90H1234",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),
@@ -117,7 +117,7 @@ public class ParkingFactoryTest {
                                                                   System.currentTimeMillis(), NORMAL));
         parkingSlots.get(1).parkingSlotData.put(1,new ParkingSpot(1,1,new Vehicle("AS90H1234",SMALL,WHITE,TOYOTA),
                                                                   System.currentTimeMillis(), NORMAL));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots,
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots,
                                                                 NORMAL);
         assertEquals(new ParkingSpot(0,1,new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA)),parkingSpot);
         assertEquals(new ParkingSpot(1,2,new Vehicle("AP10K0987",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),
@@ -132,7 +132,7 @@ public class ParkingFactoryTest {
                                                 System.currentTimeMillis(), NORMAL));
         parkingSlots.get(1).parkingSlotData.put(1,new ParkingSpot(1,1,new Vehicle("AS90H1234",SMALL,WHITE,TOYOTA),
                                                 System.currentTimeMillis(), NORMAL));
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots,
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots,
                                                                 NORMAL);
         assertEquals(new ParkingSpot(0,1,new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA)),parkingSpot);
         assertEquals(new ParkingSpot(1,2,new Vehicle("AP10K0987",SMALL,WHITE,TOYOTA),System.currentTimeMillis(),
@@ -159,7 +159,7 @@ public class ParkingFactoryTest {
                                                                   System.currentTimeMillis(), NORMAL));
         parkingSlots.get(3).parkingSlotData.put(3,new ParkingSpot(3,3,new Vehicle("AS90H1211",SMALL,WHITE,TOYOTA),
                                                                   System.currentTimeMillis(), NORMAL));
-       ParkingSpot parkingSpot = parkingFactory.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots,
+       ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA), parkingSlots,
                                                                NORMAL);
         assertEquals(new ParkingSpot(2,1,new Vehicle("AP10K0980",LARGE,WHITE,TOYOTA)),parkingSpot);
     }

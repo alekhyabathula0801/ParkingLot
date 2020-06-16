@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LargeVehicle {
+public class LargeVehicleStrategy {
 
     public ParkingSpot getParkingSpot(Vehicle vehicle, List<ParkingSlot> parkingSlots, ParkingLot.DriverType driverType) {
         List<ParkingSlot> sortedParkingSlots = parkingSlots.stream()

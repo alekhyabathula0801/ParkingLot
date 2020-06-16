@@ -20,7 +20,7 @@ public class ParkingLot implements IParkingLot{
 
     ParkingLotOwner parkingLotOwner;
     AirportSecurity airportSecurity;
-    ParkingFactory parkingFactory;
+    ParkingLotStrategy parkingLotStrategy;
 
     List<ParkingSlot> parkingSlots = new ArrayList<>();
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
@@ -29,7 +29,7 @@ public class ParkingLot implements IParkingLot{
         this.parkingSlots.forEach(slot -> parkingLotSize += slot.capacity);
         parkingLotOwner = new ParkingLotOwner();
         airportSecurity = new AirportSecurity();
-        parkingFactory = new ParkingFactory();
+        parkingLotStrategy = new ParkingLotStrategy();
     }
 
     public ParkingLot() {
@@ -48,7 +48,7 @@ public class ParkingLot implements IParkingLot{
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
         if(parkingLotSize-getParkingLotOccupiedSize()<vehicle.vehicleSize.size)
             throw new ParkingLotException("Vehicle size is more han available spots",ParkingLotException.ExceptionType.PARKING_LOT_SIZE_IS_LOW);
-        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(vehicle,parkingSlots,driverType);
+        ParkingSpot parkingSpot = parkingLotStrategy.getParkingSpot(vehicle,parkingSlots,driverType);
         parkingSlots.get(parkingSpot.slotNumber).parkVehicle(parkingSpot);
         if(isFull()) {
             airportSecurity.getParkingLotStatus(true);

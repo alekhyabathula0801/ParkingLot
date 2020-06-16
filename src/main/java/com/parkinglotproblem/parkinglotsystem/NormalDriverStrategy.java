@@ -5,7 +5,7 @@ import com.parkinglotproblem.vehicle.Vehicle;
 import java.util.Comparator;
 import java.util.List;
 
-public class NormalDriver {
+public class NormalDriverStrategy {
 
     public ParkingSpot getParkingSpot(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
         ParkingSlot parkingSlot = parkingSlots.stream()
