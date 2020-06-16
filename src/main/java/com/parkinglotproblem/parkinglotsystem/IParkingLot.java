@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IParkingLot {
 
+    public void setParkingSlots(ParkingSlot parkingSlot, ParkingSlot... parkingSlots);
     public boolean parkVehicle(Vehicle vehicle, ParkingLot.DriverType driverType);
     public int getParkingLotOccupiedSize();
     public boolean isVehicleParked(Vehicle vehicle);

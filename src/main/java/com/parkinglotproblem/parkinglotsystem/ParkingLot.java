@@ -18,8 +18,24 @@ public class ParkingLot implements IParkingLot{
     public enum ParkingLotStatus {OPEN,CLOSED}
     int parkingLotSize;
 
+    ParkingLotOwner parkingLotOwner;
+    AirportSecurity airportSecurity;
+    ParkingFactory parkingFactory;
+
     List<ParkingSlot> parkingSlots = new ArrayList<>();
     public ParkingLot(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
+        this.parkingSlots.add(parkingSlot);
+        this.parkingSlots.addAll(Arrays.asList(parkingSlots));
+        this.parkingSlots.forEach(slot -> parkingLotSize += slot.capacity);
+        parkingLotOwner = new ParkingLotOwner();
+        airportSecurity = new AirportSecurity();
+        parkingFactory = new ParkingFactory();
+    }
+
+    public ParkingLot() {
+    }
+
+    public void setParkingSlots(ParkingSlot parkingSlot, ParkingSlot... parkingSlots) {
         this.parkingSlots.add(parkingSlot);
         this.parkingSlots.addAll(Arrays.asList(parkingSlots));
         this.parkingSlots.forEach(slot -> parkingLotSize += slot.capacity);
@@ -32,10 +48,11 @@ public class ParkingLot implements IParkingLot{
             throw new ParkingLotException("Vehicle Exists", ParkingLotException.ExceptionType.VEHICLE_EXISTS);
         if(parkingLotSize-getParkingLotOccupiedSize()<vehicle.vehicleSize.size)
             throw new ParkingLotException("Vehicle size is more han available spots",ParkingLotException.ExceptionType.PARKING_LOT_SIZE_IS_LOW);
-        new ParkingFactory().parkVehicle(vehicle,parkingSlots,driverType);
+        ParkingSpot parkingSpot = parkingFactory.getParkingSpot(vehicle,parkingSlots,driverType);
+        parkingSlots.get(parkingSpot.slotNumber).parkVehicle(parkingSpot);
         if(isFull()) {
-            new AirportSecurity().getParkingLotStatus(true);
-            new ParkingLotOwner().getParkingLotStatus(true);
+            airportSecurity.getParkingLotStatus(true);
+            parkingLotOwner.getParkingLotStatus(true);
         }
         return true;
     }
@@ -49,7 +66,7 @@ public class ParkingLot implements IParkingLot{
             throw new ParkingLotException("Vehicle Doesn't Exists", ParkingLotException.ExceptionType.NO_VEHICLE);
         getParkingSlot(vehicle).unparkVehicle(vehicle);
         if(getParkingLotOccupiedSize() == parkingLotSize-1)
-            new ParkingLotOwner().getParkingLotStatus(false);
+            parkingLotOwner.getParkingLotStatus(false);
         return true;
     }
 

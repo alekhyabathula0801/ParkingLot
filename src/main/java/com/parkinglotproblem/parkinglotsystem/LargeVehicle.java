@@ -8,23 +8,23 @@ import java.util.stream.Collectors;
 
 public class LargeVehicle {
 
-    public boolean parkVehicle(Vehicle vehicle, List<ParkingSlot> parkingSlots) {
+    public ParkingSpot getParkingSpot(Vehicle vehicle, List<ParkingSlot> parkingSlots, ParkingLot.DriverType driverType) {
         List<ParkingSlot> sortedParkingSlots = parkingSlots.stream()
                                                            .filter(ParkingSlot::isOpen)
                                                            .sorted(Comparator.comparing(ParkingSlot::getOccupiedSize))
                                                            .collect(Collectors.toList());
         ParkingSlot parkingSlot1 = sortedParkingSlots.get(0);
 
-        for(int slot=0;slot<sortedParkingSlots.size();slot++) {
-            int index =  parkingSlots.indexOf(sortedParkingSlots.get(slot));
-            if(index == 0 | index == parkingSlots.size()-1) {
-                parkingSlot1 = sortedParkingSlots.get(slot);
+        for(ParkingSlot sortedParkingSlot : sortedParkingSlots) {
+            int index = parkingSlots.indexOf(sortedParkingSlot);
+            if (index == 0 | index == parkingSlots.size() - 1) {
+                parkingSlot1 = sortedParkingSlot;
                 break;
-            } else if(parkingSlots.get(index).parkingSlotData.get(1) == null&&parkingSlots.get(index-1).parkingSlotData.get(1) == null ) {
-                parkingSlot1 = sortedParkingSlots.get(slot);
+            } else if (parkingSlots.get(index).parkingSlotData.get(1) == null && parkingSlots.get(index - 1).parkingSlotData.get(1) == null) {
+                parkingSlot1 = sortedParkingSlot;
                 break;
-            } else if(parkingSlots.get(index).parkingSlotData.get(1) == null&&parkingSlots.get(index+1).parkingSlotData.get(1) == null) {
-                parkingSlot1 = sortedParkingSlots.get(slot);
+            } else if (parkingSlots.get(index).parkingSlotData.get(1) == null && parkingSlots.get(index + 1).parkingSlotData.get(1) == null) {
+                parkingSlot1 = sortedParkingSlot;
                 break;
             }
         }
@@ -44,7 +44,8 @@ public class LargeVehicle {
                                 sortedParkingSlots.get(0).getUnoccupiedSpots().get(0),parkingSlot1.getUnoccupiedSpots().get(0)-1);
             }
         }
-        return parkLargeVehicle(parkingSlots.indexOf(parkingSlot1),parkingSlot1.getUnoccupiedSpots().get(0),vehicle,parkingSlots);
+        return new ParkingSpot(parkingSlots.indexOf(parkingSlot1),parkingSlot1.getUnoccupiedSpots().get(0),vehicle,
+                               System.currentTimeMillis(),driverType);
     }
 
     public void relocateVehicle(ParkingSlot parkingSlot1, ParkingSlot parkingSlot2, int slotNumber, int spotNumberToSet,int spotNumberOfVehicle) {
@@ -52,11 +53,6 @@ public class LargeVehicle {
         parkingSlot1.parkingSlotData.get(spotNumberOfVehicle).setSpotNumber(spotNumberToSet);
         parkingSlot2.parkingSlotData.put(parkingSlot2.getUnoccupiedSpots().get(0),parkingSlot1.parkingSlotData.get(spotNumberOfVehicle));
         parkingSlot1.parkingSlotData.remove(spotNumberOfVehicle);
-    }
-
-    public boolean parkLargeVehicle(int slotNumber,int spotNumber, Vehicle vehicle, List<ParkingSlot> parkingSlots) {
-        return parkingSlots.get(slotNumber).parkVehicle(new ParkingSpot(slotNumber,spotNumber,vehicle,
-                                                        System.currentTimeMillis(),ParkingLot.DriverType.NORMAL));
     }
 
 }
